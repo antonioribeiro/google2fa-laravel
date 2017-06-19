@@ -20,7 +20,7 @@ class ServiceProvider extends IlluminateServiceProvider
     private function configurePaths()
     {
         $this->publishes([
-            __DIR__.'/../config/config.php' => config_path('google2fa.php'),
+            __DIR__.'/config/config.php' => config_path('google2fa.php'),
         ]);
     }
 
@@ -30,7 +30,7 @@ class ServiceProvider extends IlluminateServiceProvider
     private function mergeConfig()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../config/config.php', 'google2fa'
+            __DIR__.'/config/config.php', 'google2fa'
         );
     }
 
