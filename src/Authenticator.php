@@ -198,6 +198,9 @@ class Authenticator
         return $this->password;
     }
 
+    /**
+     * Keep this OTP session alive.
+     */
     private function keepAlive()
     {
         if ($this->config('keep_alive')) {
