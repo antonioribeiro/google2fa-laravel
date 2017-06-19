@@ -3,9 +3,9 @@
 return [
 
     /**
-     * User model
+     * Auth container bind
      */
 
-    'user_model' => App\User::class,
+    'auth' => 'auth',
 
 ];

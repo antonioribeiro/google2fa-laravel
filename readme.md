@@ -8,6 +8,10 @@ Google2FA is a PHP implementation of the Google Two-Factor Authentication Module
 
 This package is agnostic, but also supports the Laravel Framework.
 
+## Publish config
+
+php artisan vendor:publish --provider=PragmaRX\\Google2FALaravel\\ServiceProvider
+
 ## Demos, Example & Playground
 
 Please check the [Google2FA Package Playground](https://pragmarx.com/google2fa). 
@@ -62,7 +66,7 @@ return $google2fa->generateSecretKey();
 #### In Laravel you can use the IoC Container and the contract
 
 ```php
-$google2fa = app()->make('PragmaRX\Google2FA\Contracts\Google2FA');
+$google2fa = app()->make(PragmaRX\Google2FA\Google2FA::class);
     
 return $google2fa->generateSecretKey();
 ```
@@ -70,7 +74,7 @@ return $google2fa->generateSecretKey();
 #### Or Method Injection, in Laravel 5
 
 ```php
-use PragmaRX\Google2FA\Contracts\Google2FA;
+use PragmaRX\Google2FA\Google2FA;
     
 class WelcomeController extends Controller 
 {

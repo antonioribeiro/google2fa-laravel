@@ -2,17 +2,11 @@
 
 namespace PragmaRX\Google2FALaravel;
 
+use PragmaRX\Google2FA\Google2FA;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 
 class ServiceProvider extends IlluminateServiceProvider
 {
-    /**
-     * The application instance.
-     *
-     * @var \Illuminate\Foundation\Application
-     */
-    protected $app;
-
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -26,7 +20,7 @@ class ServiceProvider extends IlluminateServiceProvider
     private function configurePaths()
     {
         $this->publishes([
-            __DIR__.'/config/config.php' => config_path('google2fa-laravel.php'),
+            __DIR__.'/../config/config.php' => config_path('google2fa.php'),
         ]);
     }
 
@@ -36,7 +30,7 @@ class ServiceProvider extends IlluminateServiceProvider
     private function mergeConfig()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/config/config.php', 'google2fa-laravel'
+            __DIR__.'/../config/config.php', 'google2fa'
         );
     }
 
