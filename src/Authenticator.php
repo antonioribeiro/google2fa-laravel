@@ -14,6 +14,9 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class Authenticator
 {
+    /**
+     * Constants
+     */
     const CONFIG_PACKAGE_NAME = 'google2fa';
 
     const SESSION_AUTH_PASSED = 'auth_passed';
@@ -74,8 +77,7 @@ class Authenticator
         return
             ! $this->isEnabled() ||
             $this->noUserIsAuthenticated() ||
-            $this->twoFactorAuthHasPassed() ||
-            $this->passwordExpired()
+            $this->twoFactorAuthStillValid()
         ;
     }
 
@@ -196,7 +198,16 @@ class Authenticator
         return $this->password;
     }
 
+    private function keepAlive()
+    {
+        if ($this->config('keep_alive')) {
+            $this->updateCurrentAuthTime();
+        }
+    }
+
     /**
+     * Make a session var name for.
+     *
      * @param null $name
      * @return mixed
      */
@@ -205,11 +216,22 @@ class Authenticator
         return $this->config('session_var') . (is_null($name) || empty($name)? '' : '.' . $name);
     }
 
+    /**
+     * Check if the request input has the OTP.
+     *
+     * @return mixed
+     */
     private function inputHasOneTimePassword()
     {
         return $this->request->has($this->config('otp_input'));
     }
 
+    /**
+     * Make a JSON response.
+     *
+     * @param $statusCode
+     * @return JsonResponse
+     */
     private function makeJsonResponse($statusCode)
     {
         return new JsonResponse(
@@ -219,6 +241,8 @@ class Authenticator
     }
 
     /**
+     * Make the status code, to respond accordingly.
+     *
      * @return int
      */
     private function makeStatusCode()
@@ -230,6 +254,12 @@ class Authenticator
         ;
     }
 
+    /**
+     * Make a web response.
+     *
+     * @param $statusCode
+     * @return IlluminateResponse
+     */
     private function makeWebResponse($statusCode)
     {
         $view = view($this->config('view'));
@@ -243,7 +273,9 @@ class Authenticator
 
     private function minutesSinceLastActivity()
     {
-        return 10;
+        return Carbon::now()->diffInMinutes(
+            $this->sessionGet(self::SESSION_AUTH_TIME)
+        );
     }
 
     /**
@@ -254,15 +286,30 @@ class Authenticator
         return is_null($this->getUser());
     }
 
+    /**
+     * Check if OTP has expired.
+     *
+     * @return bool
+     */
     private function passwordExpired()
     {
-        return
-            ($minutes = $this->config('lifetime')) === 0
-            ? false
-            : $this->minutesSinceLastActivity() > $minutes
-        ;
+        if (($minutes = $this->config('lifetime')) == 0 && $this->minutesSinceLastActivity() > $minutes) {
+            $this->logout();
+
+            return true;
+        }
+
+        $this->keepAlive();
+
+        return false;
     }
 
+    /**
+     * Get a session var value.
+     *
+     * @param null $var
+     * @return mixed
+     */
     private function sessionGet($var = null)
     {
         return $this->request->session()->get(
@@ -270,6 +317,13 @@ class Authenticator
         );
     }
 
+    /**
+     * Put a var value to the current session.
+     *
+     * @param $var
+     * @param $value
+     * @return mixed
+     */
     private function sessionPut($var, $value)
     {
         $this->request->session()->put(
@@ -280,6 +334,11 @@ class Authenticator
         return $value;
     }
 
+    /**
+     * Forget a session var.
+     *
+     * @param null $var
+     */
     private function sessionForget($var = null)
     {
         $this->request->session()->forget(
@@ -288,6 +347,8 @@ class Authenticator
     }
 
     /**
+     * Set the request property.
+     *
      * @param mixed $request
      * @return $this
      */
@@ -298,14 +359,19 @@ class Authenticator
         return $this;
     }
 
+    /**
+     * Set current auth as valid.
+     */
     private function storeAuthPassed()
     {
         $this->sessionPut(self::SESSION_AUTH_PASSED, true);
 
-        $this->sessionPut(self::SESSION_AUTH_TIME, Carbon::now());
+        $this->updateCurrentAuthTime();
     }
 
     /**
+     * Store the old OTP.
+     *
      * @param $key
      * @return mixed
      */
@@ -319,16 +385,29 @@ class Authenticator
      *
      * @return bool
      */
-    private function twoFactorAuthHasPassed()
+    private function twoFactorAuthStillValid()
     {
-        return (bool) $this->sessionGet(self::SESSION_AUTH_PASSED, false);
+        return
+            (bool) $this->sessionGet(self::SESSION_AUTH_PASSED, false) &&
+            ! $this->passwordExpired()
+        ;
     }
 
+    /**
+     * Get the current user.
+     *
+     * @return mixed
+     */
     private function getUser()
     {
         return $this->getAuth()->user();
     }
 
+    /**
+     * Check if the current use is authenticated via OTP.
+     *
+     * @return bool
+     */
     public function isAuthenticated()
     {
         return
@@ -338,6 +417,11 @@ class Authenticator
         ;
     }
 
+    /**
+     * Check if the module is enabled.
+     *
+     * @return mixed
+     */
     private function isEnabled()
     {
         return $this->config('enabled');
@@ -361,11 +445,19 @@ class Authenticator
         return $isValid;
     }
 
+    /**
+     * OTP logout.
+     */
     public function logout()
     {
         $this->sessionForget();
     }
 
+    /**
+     * Create a response to request the OTP.
+     *
+     * @return IlluminateResponse|JsonResponse
+     */
     public function makeRequestOneTimePasswordResponse()
     {
         event(new OneTimePasswordRequested($this->getUser()));
@@ -377,6 +469,19 @@ class Authenticator
         ;
     }
 
+    /**
+     * Update the current auth time.
+     */
+    private function updateCurrentAuthTime()
+    {
+        $this->sessionPut(self::SESSION_AUTH_TIME, Carbon::now());
+    }
+
+    /**
+     * Verify the OTP.
+     *
+     * @return mixed
+     */
     private function verifyGoogle2FA()
     {
         return $this->storeOldOneTimePassord(
