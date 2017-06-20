@@ -8,7 +8,7 @@ use PragmaRX\Google2FALaravel\Authenticator;
 
 class AuthenticatorSpec extends LaravelObjectBehavior
 {
-    function let(Request $request)
+    public function let(Request $request)
     {
         $this->beConstructedWith($request);
     }

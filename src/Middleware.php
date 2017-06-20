@@ -10,8 +10,7 @@ class Middleware
     {
         $authenticator = app(Authenticator::class)->boot($request);
 
-        if ($authenticator->isAuthenticated())
-        {
+        if ($authenticator->isAuthenticated()) {
             return $next($request);
         }
 
