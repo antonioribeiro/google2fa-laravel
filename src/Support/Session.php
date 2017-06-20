@@ -23,10 +23,11 @@ trait Session
      *
      * @return mixed
      */
-    public function sessionGet($var = null)
+    public function sessionGet($var = null, $default = null)
     {
         return $this->request->session()->get(
-            $this->makeSessionVarName($var)
+            $this->makeSessionVarName($var),
+            $default
         );
     }
 
