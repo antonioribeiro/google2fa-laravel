@@ -12,6 +12,8 @@ This package is a Laravel bridge to [Google2FA](https://github.com/antonioribeir
 
 Please check the [Google2FA Package Playground](https://pragmarx.com/google2fa). 
 
+![playground](https://github.com/antonioribeiro/google2fa/raw/master/docs/playground.jpg)
+
 Here's an demo app showing how to use Google2FA: [google2fa-example](https://github.com/antonioribeiro/google2fa-example).
 
 You can scan the QR code on [this (old) demo page](https://antoniocarlosribeiro.com/technology/google2fa) with a Google Authenticator app and view the code changing (almost) in real time.
@@ -78,6 +80,12 @@ return $google2fa->generateSecretKey();
 ## Middleware
 
 This package has a middleware which will help you code 2FA on your app. To use it, you just have to:
+
+## Demo
+
+Click [here](https://pragmarx.com/google2fa/middleware) to see the middleware demo:
+
+[middleware](docs/middleware.jpg)
 
 ### Add the middleware to your Kernel.php:
 
