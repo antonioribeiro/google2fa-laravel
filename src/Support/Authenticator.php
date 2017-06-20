@@ -10,7 +10,7 @@ use PragmaRX\Google2FALaravel\Exceptions\InvalidSecretKey;
 
 class Authenticator
 {
-    use Auth, Config, Response, Request, Session, ErrorBag, Input;
+    use Auth, Config, ErrorBag, Input, Response, Request, Session;
 
     /**
      * The current password.
