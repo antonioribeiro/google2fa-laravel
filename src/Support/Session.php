@@ -60,5 +60,4 @@ trait Session
             $this->makeSessionVarName($var)
         );
     }
-
 }
