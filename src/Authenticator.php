@@ -216,6 +216,16 @@ class Authenticator
     }
 
     /**
+     * Get the OTP view.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    private function getView()
+    {
+        return view($this->config('view'));
+    }
+
+    /**
      * Keep this OTP session alive.
      */
     protected function keepAlive()
@@ -284,13 +294,11 @@ class Authenticator
      */
     protected function makeHtmlResponse($statusCode)
     {
-        $view = view($this->config('view'));
-
         if ($statusCode !== SymfonyResponse::HTTP_OK) {
-            $view->withErrors($this->getErrorBagForStatusCode($statusCode));
+            $this->getView()->withErrors($this->getErrorBagForStatusCode($statusCode));
         }
 
-        return new IlluminateHtmlResponse($view, $statusCode);
+        return new IlluminateHtmlResponse($this->getView(), $statusCode);
     }
 
     protected function minutesSinceLastActivity()
