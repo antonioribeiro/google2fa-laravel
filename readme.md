@@ -59,7 +59,7 @@ php artisan vendor:publish --provider=PragmaRX\\Google2FALaravel\\ServiceProvide
 
 ## Using It
 
-#### Instantiate it directly
+#### Use the Facade
 
 ```php
 use Google2FA;
