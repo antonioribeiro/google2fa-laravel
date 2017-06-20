@@ -162,7 +162,6 @@ class Authenticator
         return $this->request->has($this->config('otp_input'));
     }
 
-
     /**
      * Get minutes since last activity.
      *

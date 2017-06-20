@@ -52,6 +52,7 @@ trait Response
 
         return new IlluminateHtmlResponse($this->getView(), $statusCode);
     }
+
     /**
      * Put a var value to the current session.
      *
