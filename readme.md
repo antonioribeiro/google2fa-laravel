@@ -39,11 +39,11 @@ If you prefer inline QRCodes instead of a Google generated url, you'll need to i
 
 ## Installing on Laravel
 
-###Laravel 5.5
+### Laravel 5.5
 
 You don't have to do anything else, this package autoloads the Service Provider and create the Alias, using the new Auto-Discovery feature.
 
-###Laravel 5.4 and below
+### Laravel 5.4 and below
 
 Add the Service Provider and Facade alias to your `app/config/app.php` (Laravel 4.x) or `config/app.php` (Laravel 5.x):
 
