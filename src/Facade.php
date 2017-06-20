@@ -3,6 +3,7 @@
 namespace PragmaRX\Google2FALaravel;
 
 use Illuminate\Support\Facades\Facade as IlluminateFacade;
+use PragmaRX\Google2FALaravel\Support\Authenticator;
 
 class Facade extends IlluminateFacade
 {

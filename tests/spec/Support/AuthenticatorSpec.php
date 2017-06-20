@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\PragmaRX\Google2FALaravel;
+namespace spec\PragmaRX\Google2FALaravel\Support;
 
 use Illuminate\Http\Request;
 use PhpSpec\Laravel\LaravelObjectBehavior;
-use PragmaRX\Google2FALaravel\Authenticator;
+use PragmaRX\Google2FALaravel\Support\Authenticator;
 
 class AuthenticatorSpec extends LaravelObjectBehavior
 {

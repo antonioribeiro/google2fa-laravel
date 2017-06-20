@@ -3,6 +3,7 @@
 namespace PragmaRX\Google2FALaravel;
 
 use Closure;
+use PragmaRX\Google2FALaravel\Support\Authenticator;
 
 class Middleware
 {
