@@ -6,3 +6,8 @@ suites:
     spec_path: tests
     spec_prefix: spec
     psr4_prefix: PragmaRX\Google2FALaravel
+extensions:
+  PhpSpec\Laravel\Extension\LaravelExtension:
+    testing_environment: "testing"
+    framework_path: ../../../../bootstrap/app.php
+

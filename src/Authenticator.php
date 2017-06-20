@@ -6,8 +6,9 @@ use Google2FA;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
-use Illuminate\Http\Response as IlluminateResponse;
+use Illuminate\Http\Response as IlluminateHtmlResponse;
 use PragmaRX\Google2FALaravel\Exceptions\InvalidSecretKey;
+use Illuminate\Http\JsonResponse as IlluminateJsonResponse;
 use PragmaRX\Google2FALaravel\Events\OneTimePasswordRequested;
 use PragmaRX\Google2FALaravel\Exceptions\InvalidOneTimePassword;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
@@ -30,21 +31,21 @@ class Authenticator
      *
      * @var
      */
-    private $auth;
+    protected $auth;
 
     /**
      * The request instance.
      *
      * @var
      */
-    private $request;
+    protected $request;
 
     /**
      * The current password.
      *
      * @var
      */
-    private $password;
+    protected $password;
 
     /**
      * Authenticator constructor.
@@ -72,7 +73,7 @@ class Authenticator
      *
      * @return bool
      */
-    private function canPassWithoutCheckingOTP()
+    protected function canPassWithoutCheckingOTP()
     {
         return
             ! $this->isEnabled() ||
@@ -89,7 +90,7 @@ class Authenticator
      * @return mixed
      * @throws \Exception
      */
-    private function config($string, $children = [])
+    protected function config($string, $children = [])
     {
         if (is_null(config(static::CONFIG_PACKAGE_NAME))) {
             throw new \Exception('Config not found');
@@ -106,7 +107,7 @@ class Authenticator
      * @param $message
      * @return MessageBag
      */
-    private function createErrorBagForMessage($message)
+    protected function createErrorBagForMessage($message)
     {
         return new MessageBag([
             'message' => $message
@@ -118,7 +119,7 @@ class Authenticator
      *
      * @return \Illuminate\Foundation\Application|mixed
      */
-    private function getAuth()
+    protected function getAuth()
     {
         if (is_null($this->auth)) {
             $this->auth = app($this->config('auth'));
@@ -133,7 +134,7 @@ class Authenticator
      * @param $statusCode
      * @return MessageBag
      */
-    private function getErrorBagForStatusCode($statusCode)
+    protected function getErrorBagForStatusCode($statusCode)
     {
         return $this->createErrorBagForMessage(
             trans(
@@ -152,7 +153,7 @@ class Authenticator
      * @return mixed
      * @throws InvalidSecretKey
      */
-    private function getGoogle2FASecretKey()
+    protected function getGoogle2FASecretKey()
     {
         $secret = $this->getUser()->{$this->config('otp_secret_column')};
 
@@ -168,7 +169,7 @@ class Authenticator
      *
      * @return null|void
      */
-    private function getOldOneTimePassword()
+    protected function getOldOneTimePassword()
     {
         $oldPassword = $this->config('forbid_old_passwords') === true
             ? $this->sessionGet(self::SESSION_OTP_TIMESTAMP)
@@ -183,7 +184,7 @@ class Authenticator
      * @return mixed
      * @throws InvalidOneTimePassword
      */
-    private function getOneTimePassword()
+    protected function getOneTimePassword()
     {
         if (! is_null($this->password)) {
             return $this->password;
@@ -199,9 +200,19 @@ class Authenticator
     }
 
     /**
+     * Get the request instance.
+     *
+     * @return mixed
+     */
+    public function getRequest()
+    {
+        return $this->request;
+    }
+
+    /**
      * Keep this OTP session alive.
      */
-    private function keepAlive()
+    protected function keepAlive()
     {
         if ($this->config('keep_alive')) {
             $this->updateCurrentAuthTime();
@@ -214,7 +225,7 @@ class Authenticator
      * @param null $name
      * @return mixed
      */
-    private function makeSessionVarName($name = null)
+    protected function makeSessionVarName($name = null)
     {
         return $this->config('session_var') . (is_null($name) || empty($name)? '' : '.' . $name);
     }
@@ -224,7 +235,7 @@ class Authenticator
      *
      * @return mixed
      */
-    private function inputHasOneTimePassword()
+    protected function inputHasOneTimePassword()
     {
         return $this->request->has($this->config('otp_input'));
     }
@@ -235,9 +246,9 @@ class Authenticator
      * @param $statusCode
      * @return JsonResponse
      */
-    private function makeJsonResponse($statusCode)
+    protected function makeJsonResponse($statusCode)
     {
-        return new JsonResponse(
+        return new IlluminateJsonResponse(
             $this->getErrorBagForStatusCode($statusCode),
             $statusCode
         );
@@ -248,7 +259,7 @@ class Authenticator
      *
      * @return int
      */
-    private function makeStatusCode()
+    protected function makeStatusCode()
     {
         return
             $this->inputHasOneTimePassword() && ! $this->checkOTP()
@@ -261,9 +272,9 @@ class Authenticator
      * Make a web response.
      *
      * @param $statusCode
-     * @return IlluminateResponse
+     * @return \Illuminate\Http\Response
      */
-    private function makeWebResponse($statusCode)
+    protected function makeHtmlResponse($statusCode)
     {
         $view = view($this->config('view'));
 
@@ -271,10 +282,10 @@ class Authenticator
             $view->withErrors($this->getErrorBagForStatusCode($statusCode));
         }
 
-        return new IlluminateResponse($view, $statusCode);
+        return new IlluminateHtmlResponse($view, $statusCode);
     }
 
-    private function minutesSinceLastActivity()
+    protected function minutesSinceLastActivity()
     {
         return Carbon::now()->diffInMinutes(
             $this->sessionGet(self::SESSION_AUTH_TIME)
@@ -284,7 +295,7 @@ class Authenticator
     /**
      * @return bool
      */
-    private function noUserIsAuthenticated()
+    protected function noUserIsAuthenticated()
     {
         return is_null($this->getUser());
     }
@@ -294,7 +305,7 @@ class Authenticator
      *
      * @return bool
      */
-    private function passwordExpired()
+    protected function passwordExpired()
     {
         if (($minutes = $this->config('lifetime')) == 0 && $this->minutesSinceLastActivity() > $minutes) {
             $this->logout();
@@ -313,7 +324,7 @@ class Authenticator
      * @param null $var
      * @return mixed
      */
-    private function sessionGet($var = null)
+    public function sessionGet($var = null)
     {
         return $this->request->session()->get(
             $this->makeSessionVarName($var)
@@ -327,7 +338,7 @@ class Authenticator
      * @param $value
      * @return mixed
      */
-    private function sessionPut($var, $value)
+    protected function sessionPut($var, $value)
     {
         $this->request->session()->put(
             $this->makeSessionVarName($var),
@@ -342,7 +353,7 @@ class Authenticator
      *
      * @param null $var
      */
-    private function sessionForget($var = null)
+    protected function sessionForget($var = null)
     {
         $this->request->session()->forget(
             $this->makeSessionVarName($var)
@@ -365,7 +376,7 @@ class Authenticator
     /**
      * Set current auth as valid.
      */
-    private function storeAuthPassed()
+    protected function storeAuthPassed()
     {
         $this->sessionPut(self::SESSION_AUTH_PASSED, true);
 
@@ -378,7 +389,7 @@ class Authenticator
      * @param $key
      * @return mixed
      */
-    private function storeOldOneTimePassord($key)
+    protected function storeOldOneTimePassord($key)
     {
         return $this->sessionPut(self::SESSION_OTP_TIMESTAMP, $key);
     }
@@ -388,7 +399,7 @@ class Authenticator
      *
      * @return bool
      */
-    private function twoFactorAuthStillValid()
+    protected function twoFactorAuthStillValid()
     {
         return
             (bool) $this->sessionGet(self::SESSION_AUTH_PASSED, false) &&
@@ -401,7 +412,7 @@ class Authenticator
      *
      * @return mixed
      */
-    private function getUser()
+    protected function getUser()
     {
         return $this->getAuth()->user();
     }
@@ -425,7 +436,7 @@ class Authenticator
      *
      * @return mixed
      */
-    private function isEnabled()
+    protected function isEnabled()
     {
         return $this->config('enabled');
     }
@@ -435,7 +446,7 @@ class Authenticator
      *
      * @return bool
      */
-    private function checkOTP()
+    protected function checkOTP()
     {
         if (! $this->inputHasOneTimePassword()) {
             return false;
@@ -459,7 +470,7 @@ class Authenticator
     /**
      * Create a response to request the OTP.
      *
-     * @return IlluminateResponse|JsonResponse
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
     public function makeRequestOneTimePasswordResponse()
     {
@@ -468,14 +479,14 @@ class Authenticator
         return
             $this->request->expectsJson()
                 ? $this->makeJsonResponse($this->makeStatusCode())
-                : $this->makeWebResponse($this->makeStatusCode())
+                : $this->makeHtmlResponse($this->makeStatusCode())
         ;
     }
 
     /**
      * Update the current auth time.
      */
-    private function updateCurrentAuthTime()
+    protected function updateCurrentAuthTime()
     {
         $this->sessionPut(self::SESSION_AUTH_TIME, Carbon::now());
     }
@@ -485,7 +496,7 @@ class Authenticator
      *
      * @return mixed
      */
-    private function verifyGoogle2FA()
+    protected function verifyGoogle2FA()
     {
         return $this->storeOldOneTimePassord(
             Google2Fa::verifyKey(
