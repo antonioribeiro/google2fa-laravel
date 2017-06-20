@@ -52,35 +52,6 @@ trait Response
 
         return new IlluminateHtmlResponse($this->getView(), $statusCode);
     }
-    /**
-     * Put a var value to the current session.
-     *
-     * @param $var
-     * @param $value
-     *
-     * @return mixed
-     */
-    protected function sessionPut($var, $value)
-    {
-        $this->request->session()->put(
-            $this->makeSessionVarName($var),
-            $value
-        );
-
-        return $value;
-    }
-
-    /**
-     * Forget a session var.
-     *
-     * @param null $var
-     */
-    protected function sessionForget($var = null)
-    {
-        $this->request->session()->forget(
-            $this->makeSessionVarName($var)
-        );
-    }
 
     /**
      * Create a response to request the OTP.
@@ -92,8 +63,18 @@ trait Response
         event(new OneTimePasswordRequested($this->getUser()));
 
         return
-            $this->request->expectsJson()
+            $this->getRequest()->expectsJson()
                 ? $this->makeJsonResponse($this->makeStatusCode())
                 : $this->makeHtmlResponse($this->makeStatusCode());
+    }
+
+    /**
+     * Get the OTP view.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    private function getView()
+    {
+        return view($this->config('view'));
     }
 }

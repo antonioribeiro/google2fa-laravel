@@ -4,13 +4,13 @@ namespace PragmaRX\Google2FALaravel\Support;
 
 use Carbon\Carbon;
 use Google2FA;
-use Illuminate\Http\Request;
+use Illuminate\Http\Request as IlluminateRequest;
 use PragmaRX\Google2FALaravel\Exceptions\InvalidOneTimePassword;
 use PragmaRX\Google2FALaravel\Exceptions\InvalidSecretKey;
 
 class Authenticator
 {
-    use Config, ErrorBag, Response, Session;
+    use Config, Response, Request, Session, ErrorBag, Input;
 
     /**
      * The auth instance.
@@ -18,13 +18,6 @@ class Authenticator
      * @var
      */
     protected $auth;
-
-    /**
-     * The request instance.
-     *
-     * @var
-     */
-    protected $request;
 
     /**
      * The current password.
@@ -36,9 +29,9 @@ class Authenticator
     /**
      * Authenticator constructor.
      *
-     * @param Request $request
+     * @param IlluminateRequest $request
      */
-    public function __construct(Request $request)
+    public function __construct(IlluminateRequest $request)
     {
         $this->setRequest($request);
     }
@@ -52,7 +45,9 @@ class Authenticator
      */
     public function boot($request)
     {
-        return $this->setRequest($request);
+        $this->setRequest($request);
+
+        return $this;
     }
 
     /**
@@ -113,33 +108,13 @@ class Authenticator
             return $this->password;
         }
 
-        $this->password = $this->request->input($this->config('otp_input'));
+        $this->password = $this->input($this->config('otp_input'));
 
         if (is_null($this->password) || empty($this->password)) {
             throw new InvalidOneTimePassword('One Time Password cannot be empty.');
         }
 
         return $this->password;
-    }
-
-    /**
-     * Get the request instance.
-     *
-     * @return mixed
-     */
-    public function getRequest()
-    {
-        return $this->request;
-    }
-
-    /**
-     * Get the OTP view.
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    private function getView()
-    {
-        return view($this->config('view'));
     }
 
     /**
@@ -151,17 +126,6 @@ class Authenticator
             $this->updateCurrentAuthTime();
         }
     }
-
-    /**
-     * Check if the request input has the OTP.
-     *
-     * @return mixed
-     */
-    protected function inputHasOneTimePassword()
-    {
-        return $this->request->has($this->config('otp_input'));
-    }
-
 
     /**
      * Get minutes since last activity.
@@ -201,50 +165,6 @@ class Authenticator
         $this->keepAlive();
 
         return false;
-    }
-
-    /**
-     * Put a var value to the current session.
-     *
-     * @param $var
-     * @param $value
-     *
-     * @return mixed
-     */
-    protected function sessionPut($var, $value)
-    {
-        $this->request->session()->put(
-            $this->makeSessionVarName($var),
-            $value
-        );
-
-        return $value;
-    }
-
-    /**
-     * Forget a session var.
-     *
-     * @param null $var
-     */
-    protected function sessionForget($var = null)
-    {
-        $this->request->session()->forget(
-            $this->makeSessionVarName($var)
-        );
-    }
-
-    /**
-     * Set the request property.
-     *
-     * @param mixed $request
-     *
-     * @return $this
-     */
-    public function setRequest($request)
-    {
-        $this->request = $request;
-
-        return $this;
     }
 
     /**
