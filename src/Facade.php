@@ -15,4 +15,14 @@ class Facade extends IlluminateFacade
     {
         return 'pragmarx.google2fa';
     }
+
+    /**
+     * Get the registered name of the component.
+     *
+     * @return string
+     */
+    public static function logout()
+    {
+        (new Authenticator(request()))->logout();
+    }
 }
