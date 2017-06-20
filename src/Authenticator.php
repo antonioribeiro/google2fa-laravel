@@ -2,21 +2,21 @@
 
 namespace PragmaRX\Google2FALaravel;
 
-use Google2FA;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\MessageBag;
-use Illuminate\Http\Response as IlluminateHtmlResponse;
-use PragmaRX\Google2FALaravel\Exceptions\InvalidSecretKey;
+use Google2FA;
 use Illuminate\Http\JsonResponse as IlluminateJsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response as IlluminateHtmlResponse;
+use Illuminate\Support\MessageBag;
 use PragmaRX\Google2FALaravel\Events\OneTimePasswordRequested;
 use PragmaRX\Google2FALaravel\Exceptions\InvalidOneTimePassword;
+use PragmaRX\Google2FALaravel\Exceptions\InvalidSecretKey;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class Authenticator
 {
     /**
-     * Constants
+     * Constants.
      */
     const CONFIG_PACKAGE_NAME = 'google2fa';
 
@@ -52,7 +52,7 @@ class Authenticator
      *
      * @param Request $request
      */
-    function __construct(Request $request)
+    public function __construct(Request $request)
     {
         $this->setRequest($request);
     }
@@ -61,6 +61,7 @@ class Authenticator
      * Authenticator boot.
      *
      * @param $request
+     *
      * @return Authenticator
      */
     public function boot($request)
@@ -76,10 +77,9 @@ class Authenticator
     protected function canPassWithoutCheckingOTP()
     {
         return
-            ! $this->isEnabled() ||
+            !$this->isEnabled() ||
             $this->noUserIsAuthenticated() ||
-            $this->twoFactorAuthStillValid()
-        ;
+            $this->twoFactorAuthStillValid();
     }
 
     /**
@@ -87,8 +87,10 @@ class Authenticator
      *
      * @param $string
      * @param array $children
-     * @return mixed
+     *
      * @throws \Exception
+     *
+     * @return mixed
      */
     protected function config($string, $children = [])
     {
@@ -105,12 +107,13 @@ class Authenticator
      * Create an error bag and store a message on int.
      *
      * @param $message
+     *
      * @return MessageBag
      */
     protected function createErrorBagForMessage($message)
     {
         return new MessageBag([
-            'message' => $message
+            'message' => $message,
         ]);
     }
 
@@ -132,6 +135,7 @@ class Authenticator
      * Get a message bag with a message for a particular status code.
      *
      * @param $statusCode
+     *
      * @return MessageBag
      */
     protected function getErrorBagForStatusCode($statusCode)
@@ -150,8 +154,9 @@ class Authenticator
     /**
      * Get the user Google2FA secret.
      *
-     * @return mixed
      * @throws InvalidSecretKey
+     *
+     * @return mixed
      */
     protected function getGoogle2FASecretKey()
     {
@@ -181,12 +186,13 @@ class Authenticator
     /**
      * Get the OTP from user input.
      *
-     * @return mixed
      * @throws InvalidOneTimePassword
+     *
+     * @return mixed
      */
     protected function getOneTimePassword()
     {
-        if (! is_null($this->password)) {
+        if (!is_null($this->password)) {
             return $this->password;
         }
 
@@ -223,11 +229,12 @@ class Authenticator
      * Make a session var name for.
      *
      * @param null $name
+     *
      * @return mixed
      */
     protected function makeSessionVarName($name = null)
     {
-        return $this->config('session_var') . (is_null($name) || empty($name)? '' : '.' . $name);
+        return $this->config('session_var').(is_null($name) || empty($name) ? '' : '.'.$name);
     }
 
     /**
@@ -244,6 +251,7 @@ class Authenticator
      * Make a JSON response.
      *
      * @param $statusCode
+     *
      * @return JsonResponse
      */
     protected function makeJsonResponse($statusCode)
@@ -262,16 +270,16 @@ class Authenticator
     protected function makeStatusCode()
     {
         return
-            $this->inputHasOneTimePassword() && ! $this->checkOTP()
+            $this->inputHasOneTimePassword() && !$this->checkOTP()
                 ? SymfonyResponse::HTTP_UNPROCESSABLE_ENTITY
-                : SymfonyResponse::HTTP_OK
-        ;
+                : SymfonyResponse::HTTP_OK;
     }
 
     /**
      * Make a web response.
      *
      * @param $statusCode
+     *
      * @return \Illuminate\Http\Response
      */
     protected function makeHtmlResponse($statusCode)
@@ -322,6 +330,7 @@ class Authenticator
      * Get a session var value.
      *
      * @param null $var
+     *
      * @return mixed
      */
     public function sessionGet($var = null)
@@ -336,6 +345,7 @@ class Authenticator
      *
      * @param $var
      * @param $value
+     *
      * @return mixed
      */
     protected function sessionPut($var, $value)
@@ -364,6 +374,7 @@ class Authenticator
      * Set the request property.
      *
      * @param mixed $request
+     *
      * @return $this
      */
     public function setRequest($request)
@@ -387,6 +398,7 @@ class Authenticator
      * Store the old OTP.
      *
      * @param $key
+     *
      * @return mixed
      */
     protected function storeOldOneTimePassord($key)
@@ -403,8 +415,7 @@ class Authenticator
     {
         return
             (bool) $this->sessionGet(self::SESSION_AUTH_PASSED, false) &&
-            ! $this->passwordExpired()
-        ;
+            !$this->passwordExpired();
     }
 
     /**
@@ -427,8 +438,7 @@ class Authenticator
         return
             $this->canPassWithoutCheckingOTP()
                 ? true
-                : $this->checkOTP()
-        ;
+                : $this->checkOTP();
     }
 
     /**
@@ -448,7 +458,7 @@ class Authenticator
      */
     protected function checkOTP()
     {
-        if (! $this->inputHasOneTimePassword()) {
+        if (!$this->inputHasOneTimePassword()) {
             return false;
         }
 
@@ -479,8 +489,7 @@ class Authenticator
         return
             $this->request->expectsJson()
                 ? $this->makeJsonResponse($this->makeStatusCode())
-                : $this->makeHtmlResponse($this->makeStatusCode())
-        ;
+                : $this->makeHtmlResponse($this->makeStatusCode());
     }
 
     /**
