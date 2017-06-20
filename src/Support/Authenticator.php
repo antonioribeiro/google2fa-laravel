@@ -13,13 +13,6 @@ class Authenticator
     use Config, Response, Request, Session, ErrorBag, Input;
 
     /**
-     * The auth instance.
-     *
-     * @var
-     */
-    protected $auth;
-
-    /**
      * The current password.
      *
      * @var

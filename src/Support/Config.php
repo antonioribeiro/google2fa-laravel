@@ -24,18 +24,4 @@ trait Config
             implode('.', array_merge([Constants::CONFIG_PACKAGE_NAME, $string], (array) $children))
         );
     }
-
-    /**
-     * Get or make an auth instance.
-     *
-     * @return \Illuminate\Foundation\Application|mixed
-     */
-    protected function getAuth()
-    {
-        if (is_null($this->auth)) {
-            $this->auth = app($this->config('auth'));
-        }
-
-        return $this->auth;
-    }
 }

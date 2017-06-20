@@ -18,4 +18,8 @@ trait Input
     {
         return $this->getRequest()->input($var);
     }
+
+    abstract public function getRequest();
+
+    abstract public function config();
 }

@@ -25,7 +25,7 @@ trait Session
      */
     public function sessionGet($var = null, $default = null)
     {
-        return $this->request->session()->get(
+        return $this->getRequest()->session()->get(
             $this->makeSessionVarName($var),
             $default
         );
@@ -41,7 +41,7 @@ trait Session
      */
     protected function sessionPut($var, $value)
     {
-        $this->request->session()->put(
+        $this->getRequest()->session()->put(
             $this->makeSessionVarName($var),
             $value
         );
@@ -56,8 +56,12 @@ trait Session
      */
     protected function sessionForget($var = null)
     {
-        $this->request->session()->forget(
+        $this->getRequest()->session()->forget(
             $this->makeSessionVarName($var)
         );
     }
+
+    abstract protected function config($string, $children);
+
+    abstract public function getRequest();
 }

@@ -77,4 +77,16 @@ trait Response
     {
         return view($this->config('view'));
     }
+
+    abstract protected function getErrorBagForStatusCode($statusCode);
+
+    abstract protected function inputHasOneTimePassword();
+
+    abstract public function checkOTP();
+
+    abstract protected function getUser();
+
+    abstract public function getRequest();
+
+    abstract protected function config($string, $children);
 }
