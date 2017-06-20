@@ -85,7 +85,7 @@ This package has a middleware which will help you code 2FA on your app. To use i
 
 Click [here](https://pragmarx.com/google2fa/middleware) to see the middleware demo:
 
-[middleware](docs/middleware.jpg)
+![middleware](docs/middleware.jpg)
 
 ### Add the middleware to your Kernel.php:
 
