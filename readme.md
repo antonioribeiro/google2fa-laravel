@@ -87,6 +87,8 @@ Click [here](https://pragmarx.com/google2fa/middleware) to see the middleware de
 
 ![middleware](docs/middleware.jpg)
 
+## Using the middleware
+
 ### Add the middleware to your Kernel.php:
 
     protected $routeMiddleware = [
