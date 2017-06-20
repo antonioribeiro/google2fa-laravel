@@ -21,5 +21,5 @@ trait Input
 
     abstract public function getRequest();
 
-    abstract public function config();
+    abstract protected function config($string, $children = []);
 }

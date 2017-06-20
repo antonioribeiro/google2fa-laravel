@@ -61,7 +61,7 @@ trait Session
         );
     }
 
-    abstract protected function config($string, $children);
+    abstract protected function config($string, $children = []);
 
     abstract public function getRequest();
 }

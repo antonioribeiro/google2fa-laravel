@@ -88,5 +88,5 @@ trait Response
 
     abstract public function getRequest();
 
-    abstract protected function config($string, $children);
+    abstract protected function config($string, $children = []);
 }
