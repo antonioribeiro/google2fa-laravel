@@ -55,9 +55,11 @@ PragmaRX\Google2FA\Vendor\Laravel\ServiceProvider::class,
 'Google2FA' => PragmaRX\Google2FA\Vendor\Laravel\Facade::class,
 ```
 
-## Publish config
+## Publish the config file
 
+```php
 php artisan vendor:publish --provider=PragmaRX\\Google2FALaravel\\ServiceProvider
+```
 
 ## Using It
 
@@ -91,65 +93,89 @@ Click [here](https://pragmarx.com/google2fa/middleware) to see the middleware de
 
 ### Add the middleware to your Kernel.php:
 
-    protected $routeMiddleware = [
-        ...
-        '2fa' => \PragmaRX\Google2FALaravel\Middleware::class,
-    ];
+```php
+protected $routeMiddleware = [
+    ...
+    '2fa' => \PragmaRX\Google2FALaravel\Middleware::class,
+];
+```
 
 ### Using it in one or more routes:
 
-    Route::get('/admin', function () {
-        return view('admin.index');
-    })->middleware(['auth', '2fa']);
+```php
+Route::get('/admin', function () {
+    return view('admin.index');
+})->middleware(['auth', '2fa']);
+```
 
 ### Configuring the view
 
 You can set your 'ask for a one time password' view in the config file (config/google2fa.php):
 
-    /**
-     * One Time Password View
-     */
-    'view' => 'google2fa.index',
+```php
+/**
+ * One Time Password View
+ */
+'view' => 'google2fa.index',
+```
 
 And in the view you just have to provide a form containing the input, which is also configurable: 
 
-    /**
-     * One Time Password request input name
-     */
-    'otp_input' => 'one_time_password',
+```php
+/**
+ * One Time Password request input name
+ */
+'otp_input' => 'one_time_password',
+```
 
 Here's a form example:
 
+```html
     <form action="/google2fa/authenticate" method="POST">
         <input name="one_time_password" type="text">
         
         <input type="submit">Authenticate</button>
     </form>
+```
 
 ## One Time Password Lifetime
 
 Usually an OTP lasts forever, until the user logs off your app, but, to improve application safety, you may want to re-ask, only for the Google OTP, from time to time. So you can set a number of minutes here:
-  
-    /**
-    * Lifetime in minutes.
-    * In case you need your users to be asked for a new one time passwords from time to time.
-    */
-    
-    'lifetime' => 0, // 0 = eternal
+
+```php
+/**
+* Lifetime in minutes.
+* In case you need your users to be asked for a new one time passwords from time to time.
+*/
+
+'lifetime' => 0, // 0 = eternal
+```
  
 And you can decider whether your OTP will be kept alive while your users are browsing the site or not: 
 
-    /**
-     * Renew lifetime at every new request.
-     */
+```php
+/**
+ * Renew lifetime at every new request.
+ */
 
-    'keep_alive' => true,
+'keep_alive' => true,
+```
 
 ## Manually logging out from 2Fa
 
 This command wil logout your user and redirect he/she to the 2FA form on the next request:
 
-    Google2FA::logout();
+```php
+Google2FA::logout();
+```
+
+If you don't want to use the Facade, you may:
+
+```php
+use PragmaRX\Google2FALaravel\Support\Authenticator;
+
+(new Authenticator(request()))->logout();
+```
 
 ## Documentation
 
