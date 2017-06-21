@@ -48,9 +48,9 @@ You don't have to do anything else, this package autoloads the Service Provider 
 Add the Service Provider and Facade alias to your `app/config/app.php` (Laravel 4.x) or `config/app.php` (Laravel 5.x):
 
 ```php
-PragmaRX\Google2FA\Vendor\Laravel\ServiceProvider::class,
+PragmaRX\Google2FALaravel\ServiceProvider::class,,
 
-'Google2FA' => PragmaRX\Google2FA\Vendor\Laravel\Facade::class,
+'Google2FA' => PragmaRX\Google2FALaravel\Facade::class,
 ```
 
 ## Publish config
