@@ -149,7 +149,7 @@ class Authenticator
      */
     protected function passwordExpired()
     {
-        if (($minutes = $this->config('lifetime')) == 0 && $this->minutesSinceLastActivity() > $minutes) {
+        if (($minutes = $this->config('lifetime')) !== 0 && $this->minutesSinceLastActivity() > $minutes) {
             $this->logout();
 
             return true;
