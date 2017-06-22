@@ -10,7 +10,7 @@ This package is a Laravel bridge to [Google2FA](https://github.com/antonioribeir
 
 ## Demos, Example & Playground
 
-Please check the [Google2FA Package Playground](https://pragmarx.com/google2fa). 
+Please check the [Google2FA Package Playground](https://pragmarx.com/google2fa).
 
 ![playground](https://github.com/antonioribeiro/google2fa/raw/master/docs/playground.jpg)
 
@@ -33,10 +33,10 @@ This package is compatible with
 
 Use Composer to install it:
 
-    composer require pragmarx/google2fa
+    composer require pragmarx/google2fa-laravel
 
 If you prefer inline QRCodes instead of a Google generated url, you'll need to install [BaconQrCode](https://github.com/Bacon/BaconQrCode):
-  
+
     composer require "bacon/bacon-qr-code":"~1.0"
 
 ## Installing on Laravel
@@ -67,7 +67,7 @@ php artisan vendor:publish --provider=PragmaRX\\Google2FALaravel\\ServiceProvide
 
 ```php
 use Google2FA;
-    
+
 return Google2FA::generateSecretKey();
 ```
 
@@ -75,7 +75,7 @@ return Google2FA::generateSecretKey();
 
 ```php
 $google2fa = app('pragmarx.google2fa');
-    
+
 return $google2fa->generateSecretKey();
 ```
 
@@ -119,7 +119,7 @@ You can set your 'ask for a one time password' view in the config file (config/g
 'view' => 'google2fa.index',
 ```
 
-And in the view you just have to provide a form containing the input, which is also configurable: 
+And in the view you just have to provide a form containing the input, which is also configurable:
 
 ```php
 /**
@@ -133,7 +133,7 @@ Here's a form example:
 ```html
     <form action="/google2fa/authenticate" method="POST">
         <input name="one_time_password" type="text">
-        
+
         <input type="submit">Authenticate</button>
     </form>
 ```
@@ -150,8 +150,8 @@ Usually an OTP lasts forever, until the user logs off your app, but, to improve 
 
 'lifetime' => 0, // 0 = eternal
 ```
- 
-And you can decider whether your OTP will be kept alive while your users are browsing the site or not: 
+
+And you can decider whether your OTP will be kept alive while your users are browsing the site or not:
 
 ```php
 /**
@@ -180,7 +180,7 @@ use PragmaRX\Google2FALaravel\Support\Authenticator;
 ## Documentation
 
 Check the ReadMe file in the main [Google2FA](https://github.com/antonioribeiro/google2fa) repository.
- 
+
 ## Tests
 
 The package tests were written with [phpspec](http://www.phpspec.net/en/latest/).
