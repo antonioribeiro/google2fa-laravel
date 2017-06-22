@@ -50,7 +50,7 @@ You don't have to do anything else, this package autoloads the Service Provider 
 Add the Service Provider and Facade alias to your `app/config/app.php` (Laravel 4.x) or `config/app.php` (Laravel 5.x):
 
 ```php
-PragmaRX\Google2FALaravel\ServiceProvider::class,,
+PragmaRX\Google2FALaravel\ServiceProvider::class,
 
 'Google2FA' => PragmaRX\Google2FALaravel\Facade::class,
 ```
@@ -134,7 +134,7 @@ Here's a form example:
     <form action="/google2fa/authenticate" method="POST">
         <input name="one_time_password" type="text">
 
-        <input type="submit">Authenticate</button>
+        <button type="submit">Authenticate</button>
     </form>
 ```
 
