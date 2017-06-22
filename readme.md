@@ -134,7 +134,7 @@ Here's a form example:
     <form action="/google2fa/authenticate" method="POST">
         <input name="one_time_password" type="text">
 
-        <input type="submit">Authenticate</button>
+        <button type="submit">Authenticate</button>
     </form>
 ```
 
