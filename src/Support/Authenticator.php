@@ -7,6 +7,7 @@ use Google2FA;
 use Illuminate\Http\Request as IlluminateRequest;
 use PragmaRX\Google2FALaravel\Exceptions\InvalidOneTimePassword;
 use PragmaRX\Google2FALaravel\Exceptions\InvalidSecretKey;
+use PragmaRX\Google2FA\Support\Constants as Google2FAConstants;
 
 class Authenticator
 {
@@ -274,7 +275,7 @@ class Authenticator
                 $this->getOneTimePassword(),
                 $this->config('window'),
                 null, // $timestamp
-                $this->getOldOneTimePassword()
+                $this->getOldOneTimePassword() ?: Google2FAConstants::ARGUMENT_NOT_SET
             )
         );
     }
