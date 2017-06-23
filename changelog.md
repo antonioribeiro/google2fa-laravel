@@ -1,5 +1,9 @@
 ## Change Log
 
+## [0.1.2] - 2016-06-22
+### Fixed
+- Fix middleware returning nulls
+
 ## [0.1.1] - 2016-06-22
 ### Fixed
 - Keepalive time not being updated correctly
