@@ -46,11 +46,13 @@ trait Response
      */
     protected function makeHtmlResponse($statusCode)
     {
+        $view = $this->getView();
+
         if ($statusCode !== SymfonyResponse::HTTP_OK) {
-            $this->getView()->withErrors($this->getErrorBagForStatusCode($statusCode));
+            $view->withErrors($this->getErrorBagForStatusCode($statusCode));
         }
 
-        return new IlluminateHtmlResponse($this->getView(), $statusCode);
+        return new IlluminateHtmlResponse($view, $statusCode);
     }
 
     /**
