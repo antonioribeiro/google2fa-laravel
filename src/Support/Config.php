@@ -16,8 +16,8 @@ trait Config
      */
     protected function config($string, $children = [])
     {
-        if (is_null(config(Constants::CONFIG_PACKAGE_NAME))) {
-            throw new \Exception('Config not found');
+        if (is_null(config($config = Constants::CONFIG_PACKAGE_NAME))) {
+            throw new \Exception("Config ({$config}.php) not found. Have you published it?");
         }
 
         return config(
