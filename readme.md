@@ -8,6 +8,12 @@ Google2FA is a PHP implementation of the Google Two-Factor Authentication Module
 
 This package is a Laravel bridge to [Google2FA](https://github.com/antonioribeiro/google2fa)'s PHP package.
 
+The intent of this package is to create QRCodes for Google2FA and check user typed codes. If you need to create backup/recovery codes, please check below.
+
+### Recovery/Backup codes
+
+if you need to create recovery or backup codes to provide a way for your users to recover a lost account, you can use the [Recovery Pacakge](https://github.com/antonioribeiro/recovery). 
+
 ## Demos, Example & Playground
 
 Please check the [Google2FA Package Playground](https://pragmarx.com/google2fa).
