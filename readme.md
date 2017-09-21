@@ -55,7 +55,7 @@ You don't have to do anything else, this package autoloads the Service Provider 
 
 Add the Service Provider and Facade alias to your `app/config/app.php` (Laravel 4.x) or `config/app.php` (Laravel 5.x):
 
-```php
+``` php
 PragmaRX\Google2FALaravel\ServiceProvider::class,
 
 'Google2FA' => PragmaRX\Google2FALaravel\Facade::class,
@@ -63,15 +63,15 @@ PragmaRX\Google2FALaravel\ServiceProvider::class,
 
 ## Publish the config file
 
-```php
-php artisan vendor:publish --provider=PragmaRX\\Google2FALaravel\\ServiceProvider
+``` php
+php artisan vendor:publish --provider="PragmaRX\Google2FALaravel\ServiceProvider"
 ```
 
 ## Using It
 
 #### Use the Facade
 
-```php
+``` php
 use Google2FA;
 
 return Google2FA::generateSecretKey();
@@ -79,7 +79,7 @@ return Google2FA::generateSecretKey();
 
 #### In Laravel you can use the IoC Container
 
-```php
+``` php
 $google2fa = app('pragmarx.google2fa');
 
 return $google2fa->generateSecretKey();
@@ -99,7 +99,7 @@ Click [here](https://pragmarx.com/google2fa/middleware) to see the middleware de
 
 ### Add the middleware to your Kernel.php:
 
-```php
+``` php
 protected $routeMiddleware = [
     ...
     '2fa' => \PragmaRX\Google2FALaravel\Middleware::class,
@@ -108,7 +108,7 @@ protected $routeMiddleware = [
 
 ### Using it in one or more routes:
 
-```php
+``` php
 Route::get('/admin', function () {
     return view('admin.index');
 })->middleware(['auth', '2fa']);
@@ -118,7 +118,7 @@ Route::get('/admin', function () {
 
 You can set your 'ask for a one time password' view in the config file (config/google2fa.php):
 
-```php
+``` php
 /**
  * One Time Password View
  */
@@ -127,7 +127,7 @@ You can set your 'ask for a one time password' view in the config file (config/g
 
 And in the view you just have to provide a form containing the input, which is also configurable:
 
-```php
+``` php
 /**
  * One Time Password request input name
  */
@@ -148,7 +148,7 @@ Here's a form example:
 
 Usually an OTP lasts forever, until the user logs off your app, but, to improve application safety, you may want to re-ask, only for the Google OTP, from time to time. So you can set a number of minutes here:
 
-```php
+``` php
 /**
 * Lifetime in minutes.
 * In case you need your users to be asked for a new one time passwords from time to time.
@@ -159,7 +159,7 @@ Usually an OTP lasts forever, until the user logs off your app, but, to improve 
 
 And you can decider whether your OTP will be kept alive while your users are browsing the site or not:
 
-```php
+``` php
 /**
  * Renew lifetime at every new request.
  */
@@ -171,13 +171,13 @@ And you can decider whether your OTP will be kept alive while your users are bro
 
 This command wil logout your user and redirect he/she to the 2FA form on the next request:
 
-```php
+``` php
 Google2FA::logout();
 ```
 
 If you don't want to use the Facade, you may:
 
-```php
+``` php
 use PragmaRX\Google2FALaravel\Support\Authenticator;
 
 (new Authenticator(request()))->logout();
