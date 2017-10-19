@@ -12,7 +12,7 @@ The intent of this package is to create QRCodes for Google2FA and check user typ
 
 ### Recovery/Backup codes
 
-if you need to create recovery or backup codes to provide a way for your users to recover a lost account, you can use the [Recovery Pacakge](https://github.com/antonioribeiro/recovery). 
+if you need to create recovery or backup codes to provide a way for your users to recover a lost account, you can use the [Recovery Package](https://github.com/antonioribeiro/recovery). 
 
 ## Demos, Example & Playground
 
