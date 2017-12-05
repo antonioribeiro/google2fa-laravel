@@ -43,6 +43,5 @@
     "suggest": {
       "bacon/bacon-qr-code": "Required to generate inline QR Codes.",
       "pragmarx/recovery": "Generate recovery codes."
-    },
-    "minimum-stability": "dev"
+    }
 }
