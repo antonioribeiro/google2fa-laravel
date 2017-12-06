@@ -26,9 +26,13 @@ You can scan the QR code on [this (old) demo page](https://antoniocarlosribeiro.
 
 ## Compatibility
 
-This package is compatible with
+| Laravel | [Google2FA](https://github.com/antonioribeiro/google2fa) | Google2FA-Laravel |
+|---------|-----------|-------------------|
+| 4.2     | <= 1.0.1  |                   |
+| 5.0-5.1 | <= 1.0.1  |                   |
+| 5.2-5.5 | >= 2.0.0  | >= 0.1.4          |
 
-- Laravel 5.2+
+Before Google2FA 2.0 (Laravel 5.1) you have to install `pragmarx/google2fa:~1.0`, because this package was both a Laravel package and a PHP (agnostic).   
 
 ## Installing
 
