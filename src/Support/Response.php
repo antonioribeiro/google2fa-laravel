@@ -62,12 +62,19 @@ trait Response
      */
     public function makeRequestOneTimePasswordResponse()
     {
-        event(new OneTimePasswordRequested($this->getUser()));
+        event(
+            app()->version() < '5.4'
+                ? new OneTimePasswordRequestedL53($this->getUser())
+                : new OneTimePasswordRequested($this->getUser())
+        );
 
-        return
-            $this->getRequest()->expectsJson()
-                ? $this->makeJsonResponse($this->makeStatusCode())
-                : $this->makeHtmlResponse($this->makeStatusCode());
+        $expectJson = app()->version() < '5.4'
+            ? $this->getRequest()->wantsJson()
+            : $this->getRequest()->expectsJson();
+
+        return $expectJson
+            ? $this->makeJsonResponse($this->makeStatusCode())
+            : $this->makeHtmlResponse($this->makeStatusCode());
     }
 
     /**

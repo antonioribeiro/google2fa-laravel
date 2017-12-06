@@ -24,16 +24,11 @@ Here's an demo app showing how to use Google2FA: [google2fa-example](https://git
 
 You can scan the QR code on [this (old) demo page](https://antoniocarlosribeiro.com/technology/google2fa) with a Google Authenticator app and view the code changing (almost) in real time.
 
-## Requirements
-
-- PHP 5.4+
-
 ## Compatibility
 
 This package is compatible with
 
-- Laravel 4.1+
-- Laravel 5+
+- Laravel 5.2+
 
 ## Installing
 
