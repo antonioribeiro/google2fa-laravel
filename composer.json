@@ -12,7 +12,7 @@
     ],
     "require": {
         "php": ">=5.4",
-        "laravel/framework": "~5",
+        "laravel/framework": ">=5.2",
         "pragmarx/google2fa": "~2.0"
     },
     "require-dev": {
