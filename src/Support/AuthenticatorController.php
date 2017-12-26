@@ -21,11 +21,11 @@ class AuthenticatorController
     protected $password;
 
     /**
-     * The backend.
+     * The authenticator.
      *
      * @var
      */
-    protected $backend;
+    protected $authenticator;
 
 
     /**
@@ -47,7 +47,7 @@ class AuthenticatorController
      */
     public function boot($request)
     {
-        $this->backend = app(Authenticator::class)->boot($request);
+        $this->authenticator = app(Authenticator::class)->boot($request);
         $this->setRequest($request);
 
         return $this;
@@ -83,7 +83,7 @@ class AuthenticatorController
     public function isAuthenticated()
     {
         return
-            $this->backend->canPassWithoutCheckingOTP()
+            $this->authenticator->canPassWithoutCheckingOTP()
                 ? true
                 : $this->checkOTP();
     }
@@ -100,7 +100,7 @@ class AuthenticatorController
         }
 
         if ($isValid = $this->verifyGoogle2FA()) {
-            $this->backend->storeAuthPassed();
+            $this->authenticator->login();
         }
 
         return $isValid;
@@ -113,11 +113,6 @@ class AuthenticatorController
      */
     protected function verifyGoogle2FA()
     {
-        return $this->backend->storeOldOneTimePassord(
-            $this->backend->verifyGoogle2FA(
-                $this->backend->getGoogle2FASecretKey(),
-                $this->getOneTimePassword()
-            )
-        );
+        return $this->authenticator->verifyAndStoreOneTimePassord($this->getOneTimePassword());
     }
 }

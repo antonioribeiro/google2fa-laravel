@@ -11,7 +11,7 @@ use PragmaRX\Google2FALaravel\Exceptions\InvalidSecretKey;
 
 class Authenticator
 {
-    use Auth, Config, ErrorBag, Request, Session;
+    use Auth, Config, Request, Session;
 
     /**
      * Authenticator constructor.
@@ -58,10 +58,9 @@ class Authenticator
      *
      * @return mixed
      */
-    public function getGoogle2FASecretKey()
+    protected function getGoogle2FASecretKey()
     {
         $secret = $this->getUser()->{$this->config('otp_secret_column')};
-
         return $secret;
     }
 
@@ -70,7 +69,7 @@ class Authenticator
      * 
      * @return bool
      */
-    protected function isActivated()
+    public function isActivated()
     {
         $secret = $this->getGoogle2FASecretKey();
         return !is_null($secret) && !empty($secret);
@@ -141,7 +140,7 @@ class Authenticator
     /**
      * Set current auth as valid.
      */
-    public function storeAuthPassed()
+    public function login()
     {
         $this->sessionPut(Constants::SESSION_AUTH_PASSED, true);
 
@@ -213,4 +212,20 @@ class Authenticator
                 $this->getOldOneTimePassword() ?: Google2FAConstants::ARGUMENT_NOT_SET
         );
     }
+
+    /**
+     * Verify the OTP.
+     *
+     * @return mixed
+     */
+    public function verifyAndStoreOneTimePassord($one_time_password)
+    {
+        return $this->storeOldOneTimePassord(
+            $this->verifyGoogle2FA(
+                $this->getGoogle2FASecretKey(),
+                $one_time_password
+            )
+        );
+    }
+    
 }
