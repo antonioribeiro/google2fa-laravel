@@ -25,5 +25,15 @@ trait Auth
         return $this->auth;
     }
 
+    /**
+     * Get the current user.
+     *
+     * @return mixed
+     */
+    protected function getUser()
+    {
+        return $this->getAuth()->user();
+    }
+    
     abstract public function config($string, $children = []);
 }

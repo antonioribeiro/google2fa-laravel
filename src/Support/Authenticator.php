@@ -11,14 +11,7 @@ use PragmaRX\Google2FALaravel\Exceptions\InvalidSecretKey;
 
 class Authenticator
 {
-    use Auth, Config, ErrorBag, Input, Response, Request, Session;
-
-    /**
-     * The current password.
-     *
-     * @var
-     */
-    protected $password;
+    use Auth, Config, ErrorBag, Request, Session;
 
     /**
      * Authenticator constructor.
@@ -27,7 +20,7 @@ class Authenticator
      */
     public function __construct(IlluminateRequest $request)
     {
-        $this->setRequest($request);
+        $this->boot($request);
     }
 
     /**
@@ -49,11 +42,12 @@ class Authenticator
      *
      * @return bool
      */
-    protected function canPassWithoutCheckingOTP()
+    public function canPassWithoutCheckingOTP()
     {
         return
             !$this->isEnabled() ||
             $this->noUserIsAuthenticated() ||
+            !$this->isActivated() ||
             $this->twoFactorAuthStillValid();
     }
 
@@ -64,15 +58,22 @@ class Authenticator
      *
      * @return mixed
      */
-    protected function getGoogle2FASecretKey()
+    public function getGoogle2FASecretKey()
     {
         $secret = $this->getUser()->{$this->config('otp_secret_column')};
 
-        if (is_null($secret) || empty($secret)) {
-            throw new InvalidSecretKey('Secret key cannot be empty.');
-        }
-
         return $secret;
+    }
+
+    /**
+     * Check if the 2FA is activated for the user
+     * 
+     * @return bool
+     */
+    protected function isActivated()
+    {
+        $secret = $this->getGoogle2FASecretKey();
+        return !is_null($secret) && !empty($secret);
     }
 
     /**
@@ -82,33 +83,9 @@ class Authenticator
      */
     protected function getOldOneTimePassword()
     {
-        $oldPassword = $this->config('forbid_old_passwords') === true
+        return $this->config('forbid_old_passwords') === true
             ? $this->sessionGet(Constants::SESSION_OTP_TIMESTAMP)
             : null;
-
-        return $oldPassword;
-    }
-
-    /**
-     * Get the OTP from user input.
-     *
-     * @throws InvalidOneTimePassword
-     *
-     * @return mixed
-     */
-    protected function getOneTimePassword()
-    {
-        if (!is_null($this->password)) {
-            return $this->password;
-        }
-
-        $this->password = $this->input($this->config('otp_input'));
-
-        if (is_null($this->password) || empty($this->password)) {
-            throw new InvalidOneTimePassword('One Time Password cannot be empty.');
-        }
-
-        return $this->password;
     }
 
     /**
@@ -164,7 +141,7 @@ class Authenticator
     /**
      * Set current auth as valid.
      */
-    protected function storeAuthPassed()
+    public function storeAuthPassed()
     {
         $this->sessionPut(Constants::SESSION_AUTH_PASSED, true);
 
@@ -178,7 +155,7 @@ class Authenticator
      *
      * @return mixed
      */
-    protected function storeOldOneTimePassord($key)
+    public function storeOldOneTimePassord($key)
     {
         return $this->sessionPut(Constants::SESSION_OTP_TIMESTAMP, $key);
     }
@@ -196,29 +173,6 @@ class Authenticator
     }
 
     /**
-     * Get the current user.
-     *
-     * @return mixed
-     */
-    protected function getUser()
-    {
-        return $this->getAuth()->user();
-    }
-
-    /**
-     * Check if the current use is authenticated via OTP.
-     *
-     * @return bool
-     */
-    public function isAuthenticated()
-    {
-        return
-            $this->canPassWithoutCheckingOTP()
-                ? true
-                : $this->checkOTP();
-    }
-
-    /**
      * Check if the module is enabled.
      *
      * @return mixed
@@ -226,24 +180,6 @@ class Authenticator
     protected function isEnabled()
     {
         return $this->config('enabled');
-    }
-
-    /**
-     * Check if the input OTP is valid.
-     *
-     * @return bool
-     */
-    protected function checkOTP()
-    {
-        if (!$this->inputHasOneTimePassword()) {
-            return false;
-        }
-
-        if ($isValid = $this->verifyGoogle2FA()) {
-            $this->storeAuthPassed();
-        }
-
-        return $isValid;
     }
 
     /**
@@ -267,16 +203,14 @@ class Authenticator
      *
      * @return mixed
      */
-    protected function verifyGoogle2FA()
+    public function verifyGoogle2FA($secret, $one_time_password)
     {
-        return $this->storeOldOneTimePassord(
-            Google2Fa::verifyKey(
-                $this->getGoogle2FASecretKey(),
-                $this->getOneTimePassword(),
+        return Google2Fa::verifyKey(
+                $secret,
+                $one_time_password,
                 $this->config('window'),
                 null, // $timestamp
                 $this->getOldOneTimePassword() ?: Google2FAConstants::ARGUMENT_NOT_SET
-            )
         );
     }
 }
