@@ -76,11 +76,25 @@ class Authenticator
     }
 
     /**
+     * Store the old OTP.
+     *
+     * @param $key
+     *
+     * @return mixed
+     */
+    protected function storeOldTimestamp($key)
+    {
+        return $this->config('forbid_old_passwords') === true
+            ? $this->sessionPut(Constants::SESSION_OTP_TIMESTAMP, $key)
+            : $key;
+    }
+
+    /**
      * Get the previous OTP.
      *
      * @return null|void
      */
-    protected function getOldOneTimePassword()
+    protected function getOldTimestamp()
     {
         return $this->config('forbid_old_passwords') === true
             ? $this->sessionGet(Constants::SESSION_OTP_TIMESTAMP)
@@ -138,28 +152,6 @@ class Authenticator
     }
 
     /**
-     * Set current auth as valid.
-     */
-    public function login()
-    {
-        $this->sessionPut(Constants::SESSION_AUTH_PASSED, true);
-
-        $this->updateCurrentAuthTime();
-    }
-
-    /**
-     * Store the old OTP.
-     *
-     * @param $key
-     *
-     * @return mixed
-     */
-    public function storeOldOneTimePassord($key)
-    {
-        return $this->sessionPut(Constants::SESSION_OTP_TIMESTAMP, $key);
-    }
-
-    /**
      * Verifies, in the current session, if a 2fa check has already passed.
      *
      * @return bool
@@ -179,6 +171,16 @@ class Authenticator
     protected function isEnabled()
     {
         return $this->config('enabled');
+    }
+
+    /**
+     * Set current auth as valid.
+     */
+    public function login()
+    {
+        $this->sessionPut(Constants::SESSION_AUTH_PASSED, true);
+
+        $this->updateCurrentAuthTime();
     }
 
     /**
@@ -209,7 +211,7 @@ class Authenticator
                 $one_time_password,
                 $this->config('window'),
                 null, // $timestamp
-                $this->getOldOneTimePassword() ?: Google2FAConstants::ARGUMENT_NOT_SET
+                $this->getOldTimestamp() ?: Google2FAConstants::ARGUMENT_NOT_SET
         );
     }
 
@@ -220,7 +222,7 @@ class Authenticator
      */
     public function verifyAndStoreOneTimePassord($one_time_password)
     {
-        return $this->storeOldOneTimePassord(
+        return $this->storeOldTimeStamp(
             $this->verifyGoogle2FA(
                 $this->getGoogle2FASecretKey(),
                 $one_time_password
