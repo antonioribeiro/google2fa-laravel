@@ -33,7 +33,6 @@ class Authenticator
     public function boot($request)
     {
         $this->setRequest($request);
-
         return $this;
     }
 
@@ -42,7 +41,7 @@ class Authenticator
      *
      * @return bool
      */
-    public function canPassWithoutCheckingOTP()
+    protected function canPassWithoutCheckingOTP()
     {
         return
             !$this->isEnabled() ||
@@ -60,8 +59,7 @@ class Authenticator
      */
     protected function getGoogle2FASecretKey()
     {
-        $secret = $this->getUser()->{$this->config('otp_secret_column')};
-        return $secret;
+        return $this->getUser()->{$this->config('otp_secret_column')};
     }
 
     /**
@@ -76,7 +74,7 @@ class Authenticator
     }
 
     /**
-     * Store the old OTP.
+     * Store the old OTP timestamp.
      *
      * @param $key
      *
@@ -90,7 +88,7 @@ class Authenticator
     }
 
     /**
-     * Get the previous OTP.
+     * Get the previous OTP timestamp.
      *
      * @return null|void
      */
@@ -216,11 +214,11 @@ class Authenticator
     }
 
     /**
-     * Verify the OTP.
+     * Verify the OTP and store the timestamp
      *
      * @return mixed
      */
-    public function verifyAndStoreOneTimePassord($one_time_password)
+    protected function verifyAndStoreOneTimePassord($one_time_password)
     {
         return $this->storeOldTimeStamp(
             $this->verifyGoogle2FA(

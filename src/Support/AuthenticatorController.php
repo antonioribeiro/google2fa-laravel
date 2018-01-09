@@ -9,9 +9,9 @@ use PragmaRX\Google2FA\Support\Constants as Google2FAConstants;
 use PragmaRX\Google2FALaravel\Exceptions\InvalidOneTimePassword;
 use PragmaRX\Google2FALaravel\Exceptions\InvalidSecretKey;
 
-class AuthenticatorController
+class AuthenticatorController extends Authenticator
 {
-    use Auth, Config, ErrorBag, Input, Request, Response;
+    use ErrorBag, Input, Response;
 
     /**
      * The current password.
@@ -19,14 +19,6 @@ class AuthenticatorController
      * @var
      */
     protected $password;
-
-    /**
-     * The authenticator.
-     *
-     * @var
-     */
-    protected $authenticator;
-
 
     /**
      * Authenticator constructor.
@@ -47,9 +39,7 @@ class AuthenticatorController
      */
     public function boot($request)
     {
-        $this->authenticator = app(Authenticator::class)->boot($request);
         $this->setRequest($request);
-
         return $this;
     }
 
@@ -82,10 +72,7 @@ class AuthenticatorController
      */
     public function isAuthenticated()
     {
-        return
-            $this->authenticator->canPassWithoutCheckingOTP()
-                ? true
-                : $this->checkOTP();
+        return $this->canPassWithoutCheckingOTP() ?? $this->checkOTP();
     }
 
     /**
@@ -99,8 +86,8 @@ class AuthenticatorController
             return false;
         }
 
-        if ($isValid = $this->verifyGoogle2FA()) {
-            $this->authenticator->login();
+        if ($isValid = $this->verifyOneTimePassword()) {
+            $this->login();
         }
 
         return $isValid;
@@ -111,8 +98,8 @@ class AuthenticatorController
      *
      * @return mixed
      */
-    protected function verifyGoogle2FA()
+    protected function verifyOneTimePassword()
     {
-        return $this->authenticator->verifyAndStoreOneTimePassord($this->getOneTimePassword());
+        return $this->verifyAndStoreOneTimePassord($this->getOneTimePassword());
     }
 }
