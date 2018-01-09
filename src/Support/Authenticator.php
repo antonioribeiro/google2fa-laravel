@@ -32,6 +32,7 @@ class Authenticator
     public function boot($request)
     {
         $this->setRequest($request);
+
         return $this;
     }
 
@@ -63,7 +64,7 @@ class Authenticator
 
     /**
      * Check if the 2FA is activated for the user.
-     * 
+     *
      * @return bool
      */
     public function isActivated()
