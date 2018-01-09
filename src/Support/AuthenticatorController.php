@@ -27,7 +27,7 @@ class AuthenticatorController extends Authenticator
      */
     public function __construct(IlluminateRequest $request)
     {
-        $this->boot($request);
+        parent::__construct($request);
     }
 
     /**
@@ -39,7 +39,7 @@ class AuthenticatorController extends Authenticator
      */
     public function boot($request)
     {
-        $this->setRequest($request);
+        parent::boot($request);
         return $this;
     }
 
@@ -72,7 +72,9 @@ class AuthenticatorController extends Authenticator
      */
     public function isAuthenticated()
     {
-        return $this->canPassWithoutCheckingOTP() ?? $this->checkOTP();
+        return $this->canPassWithoutCheckingOTP()
+            ? true
+            : $this->checkOTP();
     }
 
     /**
