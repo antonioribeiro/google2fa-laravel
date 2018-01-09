@@ -18,7 +18,7 @@ trait Input
     {
         return $this->getRequest()->input($this->config('otp_input'));
     }
-    
+
     abstract public function getRequest();
 
     abstract protected function config($string, $children = []);

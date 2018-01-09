@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Google2FA;
 use Illuminate\Http\Request as IlluminateRequest;
 use PragmaRX\Google2FA\Support\Constants as Google2FAConstants;
-use PragmaRX\Google2FALaravel\Exceptions\InvalidOneTimePassword;
 use PragmaRX\Google2FALaravel\Exceptions\InvalidSecretKey;
 
 class Authenticator
@@ -63,13 +62,14 @@ class Authenticator
     }
 
     /**
-     * Check if the 2FA is activated for the user
+     * Check if the 2FA is activated for the user.
      * 
      * @return bool
      */
     public function isActivated()
     {
         $secret = $this->getGoogle2FASecretKey();
+
         return !is_null($secret) && !empty($secret);
     }
 
@@ -214,7 +214,7 @@ class Authenticator
     }
 
     /**
-     * Verify the OTP and store the timestamp
+     * Verify the OTP and store the timestamp.
      *
      * @return mixed
      */
@@ -227,5 +227,4 @@ class Authenticator
             )
         );
     }
-    
 }

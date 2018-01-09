@@ -2,12 +2,8 @@
 
 namespace PragmaRX\Google2FALaravel\Support;
 
-use Carbon\Carbon;
-use Google2FA;
 use Illuminate\Http\Request as IlluminateRequest;
-use PragmaRX\Google2FA\Support\Constants as Google2FAConstants;
 use PragmaRX\Google2FALaravel\Exceptions\InvalidOneTimePassword;
-use PragmaRX\Google2FALaravel\Exceptions\InvalidSecretKey;
 
 class AuthenticatorController extends Authenticator
 {
@@ -40,6 +36,7 @@ class AuthenticatorController extends Authenticator
     public function boot($request)
     {
         parent::boot($request);
+
         return $this;
     }
 
