@@ -2,9 +2,9 @@
 
 namespace PragmaRX\Google2FALaravel\Support;
 
-use PragmaRX\Google2FALaravel\Google2FA;
 use Illuminate\Http\Request as IlluminateRequest;
 use PragmaRX\Google2FALaravel\Exceptions\InvalidOneTimePassword;
+use PragmaRX\Google2FALaravel\Google2FA;
 
 class Authenticator extends Google2FA
 {
@@ -74,7 +74,6 @@ class Authenticator extends Google2FA
             ? true
             : $this->checkOTP();
     }
-
 
     /**
      * Check if it is already logged in or passable without checking for an OTP.
