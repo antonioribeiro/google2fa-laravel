@@ -16,7 +16,7 @@ if you need to create recovery or backup codes to provide a way for your users t
 
 ## Demos, Example & Playground
 
-Please check the [Google2FA Package Playground](https://pragmarx.com/google2fa).
+Please check the [Google2FA Package Playground](https://pragmarx.com/playground/google2fa#/).
 
 ![playground](https://github.com/antonioribeiro/google2fa/raw/master/docs/playground.jpg)
 
