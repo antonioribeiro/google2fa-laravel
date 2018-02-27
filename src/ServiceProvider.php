@@ -3,7 +3,6 @@
 namespace PragmaRX\Google2FALaravel;
 
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
-use PragmaRX\Google2FA\Google2FA;
 
 class ServiceProvider extends IlluminateServiceProvider
 {
