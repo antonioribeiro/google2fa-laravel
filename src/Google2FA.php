@@ -3,15 +3,15 @@
 namespace PragmaRX\Google2FALaravel;
 
 use Carbon\Carbon;
-use PragmaRX\Google2FALaravel\Support\Auth;
-use PragmaRX\Google2FALaravel\Support\Config;
-use PragmaRX\Google2FALaravel\Support\Request;
-use PragmaRX\Google2FALaravel\Support\Session;
-use PragmaRX\Google2FALaravel\Support\Constants;
 use Illuminate\Http\Request as IlluminateRequest;
 use PragmaRX\Google2FA\Google2FA as Google2FAService;
-use PragmaRX\Google2FALaravel\Exceptions\InvalidSecretKey;
 use PragmaRX\Google2FA\Support\Constants as Google2FAConstants;
+use PragmaRX\Google2FALaravel\Exceptions\InvalidSecretKey;
+use PragmaRX\Google2FALaravel\Support\Auth;
+use PragmaRX\Google2FALaravel\Support\Config;
+use PragmaRX\Google2FALaravel\Support\Constants;
+use PragmaRX\Google2FALaravel\Support\Request;
+use PragmaRX\Google2FALaravel\Support\Session;
 
 class Google2FA extends Google2FAService
 {
@@ -194,6 +194,7 @@ class Google2FA extends Google2FAService
      *
      * @param $secret
      * @param $one_time_password
+     *
      * @return mixed
      */
     public function verifyGoogle2FA($secret, $one_time_password)
@@ -211,6 +212,7 @@ class Google2FA extends Google2FAService
      * Verify the OTP and store the timestamp.
      *
      * @param $one_time_password
+     *
      * @return mixed
      */
     protected function verifyAndStoreOneTimePassword($one_time_password)
