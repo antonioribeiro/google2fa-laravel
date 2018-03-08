@@ -182,6 +182,17 @@ use PragmaRX\Google2FALaravel\Support\Authenticator;
 (new Authenticator(request()))->logout();
 ```
 
+## Events
+
+The following events are fired:
+
+- EmptyOneTimePasswordReceived
+- LoggedOut
+- LoginFailed
+- LoginSucceeded
+- OneTimePasswordExpired
+- OneTimePasswordRequested
+
 ## Documentation
 
 Check the ReadMe file in the main [Google2FA](https://github.com/antonioribeiro/google2fa) repository.
