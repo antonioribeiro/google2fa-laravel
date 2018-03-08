@@ -16,8 +16,8 @@
         "pragmarx/google2fa": "~3.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "~7",
-        "orchestra/testbench-browser-kit": "~3.6"
+        "phpunit/phpunit": "~5|~6|~7",
+        "orchestra/testbench-browser-kit": "~3.4|~3.5|~3.6"
     },
     "autoload": {
         "psr-4": {
