@@ -2,8 +2,8 @@
 
 namespace PragmaRX\Google2FALaravel\Tests\Support;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -60,7 +60,8 @@ class User extends Authenticatable
     /**
      * Retrieve the model for a bound value.
      *
-     * @param  mixed $value
+     * @param mixed $value
+     *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function resolveRouteBinding($value)
