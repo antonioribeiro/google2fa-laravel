@@ -196,7 +196,7 @@ The package tests were written with [phpspec](http://www.phpspec.net/en/latest/)
 
 ## License
 
-Google2FA is licensed under the BSD 3-Clause License - see the `LICENSE` file for details
+Google2FA is licensed under the MIT License - see the `LICENSE` file for details
 
 ## Contributing
 
