@@ -13,16 +13,16 @@
     "require": {
         "php": ">=5.4",
         "laravel/framework": ">=5.2",
-        "pragmarx/google2fa": "~2.0"
+        "pragmarx/google2fa": "~3.0"
     },
     "require-dev": {
-        "phpspec/phpspec": "~3",
-        "benconstable/phpspec-laravel": "~3.0"
+        "phpunit/phpunit": "~7",
+        "orchestra/testbench-browser-kit": "~3.6"
     },
     "autoload": {
         "psr-4": {
             "PragmaRX\\Google2FALaravel\\": "src/",
-            "spec\\PragmaRX\\Google2FALaravel\\": "tests/spec/"
+            "PragmaRX\\Google2FALaravel\\Tests\\": "tests/"
         }
     },
     "extra": {
