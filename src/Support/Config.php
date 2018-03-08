@@ -8,7 +8,9 @@ trait Config
      * Get a config value.
      *
      * @param $string
+     *
      * @throws \Exception
+     *
      * @return mixed
      */
     protected function config($string, $default = null)
