@@ -2,16 +2,20 @@
 
 ## [0.2.0] - 2018-03-07
 ### Add
-- Separate Controller from 
-- Events: 
-    - google2fa.login.success
-    - google2fa.login.failed
-    - google2fa.login.lockout
-      
+- Firing events: 
+    - EmptyOneTimePasswordReceived
+    - LoggedOut
+    - LoginFailed
+    - LoginSucceeded
+    - OneTimePasswordExpired
+    - OneTimePasswordRequested
 ### Changed
+- Google2FA is not dependent from Middleware anymore 
 - Small refactor
 - Change license to MIT
 - Move from phpspec tests to PHPUnit and Orchestra
+### Removed
+- Support for PHP 5.4-5.6 (should still work, but would have to be tested by users)
 
 ## [0.1.4] - 2017-12-05
 ### Add
