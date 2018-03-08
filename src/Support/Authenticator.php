@@ -50,17 +50,11 @@ class Authenticator extends Google2FA
      */
     protected function getOneTimePassword()
     {
-        if (!is_null($this->password)) {
-            return $this->password;
-        }
-
-        $this->password = $this->getInputOneTimePassword();
-
-        if (is_null($this->password) || empty($this->password)) {
+        if (is_null($password = $this->getInputOneTimePassword()) || empty($password)) {
             throw new InvalidOneTimePassword('One Time Password cannot be empty.');
         }
 
-        return $this->password;
+        return $password;
     }
 
     /**
