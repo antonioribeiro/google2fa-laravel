@@ -79,7 +79,7 @@ class Google2FaLaravelTest extends TestCase
     public function testRedirectToGoogle2FAView()
     {
         $this->assertContains(
-            "google2fa view",
+            'google2fa view',
             $this->home()
         );
     }
@@ -96,7 +96,7 @@ class Google2FaLaravelTest extends TestCase
 
     public function testWrongOTP()
     {
-        $this->assertLogin('9999999', "google2fa view");
+        $this->assertLogin('9999999', 'google2fa view');
     }
 
     public function testGoogle2FAEmptyPassword()
@@ -109,7 +109,7 @@ class Google2FaLaravelTest extends TestCase
     public function testLogout()
     {
         $this->assertContains(
-            "google2fa view",
+            'google2fa view',
             $this->home()
         );
 
@@ -126,7 +126,7 @@ class Google2FaLaravelTest extends TestCase
         );
 
         $this->assertContains(
-            "google2fa view",
+            'google2fa view',
             $this->home()
         );
     }
@@ -136,7 +136,7 @@ class Google2FaLaravelTest extends TestCase
         config(['google2fa.forbid_old_passwords' => true]);
 
         $this->assertContains(
-            "google2fa view",
+            'google2fa view',
             $this->home()
         );
 
@@ -153,7 +153,7 @@ class Google2FaLaravelTest extends TestCase
         );
 
         $this->assertContains(
-            "google2fa view",
+            'google2fa view',
             $this->home()
         );
     }
@@ -194,7 +194,7 @@ class Google2FaLaravelTest extends TestCase
         Carbon::setTestNow(Carbon::now()->addMinutes(3));
 
         $this->assertContains(
-            "google2fa view",
+            'google2fa view',
             $this->home()
         );
     }
