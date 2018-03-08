@@ -4,7 +4,6 @@ namespace PragmaRX\Google2FALaravel\Tests;
 
 use Illuminate\Support\Facades\Auth;
 use PragmaRX\Google2FA\Tests\Constants;
-use PragmaRX\Google2FALaravel\Exceptions\InvalidOneTimePassword;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use PragmaRX\Google2FALaravel\Tests\Support\User;
 
@@ -14,7 +13,7 @@ class Google2FaLaravelTest extends TestCase
     {
         return [
             \PragmaRX\Google2FALaravel\ServiceProvider::class,
-            \Illuminate\Auth\AuthServiceProvider::class
+            \Illuminate\Auth\AuthServiceProvider::class,
         ];
     }
 
@@ -22,7 +21,7 @@ class Google2FaLaravelTest extends TestCase
     {
         return [
             'Google2FA' => \PragmaRX\Google2FALaravel\Facade::class,
-            'Auth' => \Illuminate\Support\Facades\Auth::class,
+            'Auth'      => \Illuminate\Support\Facades\Auth::class,
         ];
     }
 
@@ -97,7 +96,7 @@ class Google2FaLaravelTest extends TestCase
     public function testGoogle2FAEmptyPassword()
     {
         $this->assertContains(
-            "cannot be empty",
+            'cannot be empty',
             $this->call('POST', 'login', ['one_time_password' => null])->getContent()
         );
     }
@@ -115,7 +114,7 @@ class Google2FaLaravelTest extends TestCase
         );
 
         $this->assertEquals(
-            "we are home",
+            'we are home',
             $this->home()
         );
 
@@ -145,7 +144,7 @@ class Google2FaLaravelTest extends TestCase
         );
 
         $this->assertEquals(
-            "we are home",
+            'we are home',
             $this->home()
         );
 
