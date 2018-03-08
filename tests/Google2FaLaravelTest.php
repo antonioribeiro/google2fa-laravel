@@ -61,7 +61,6 @@ class Google2FaLaravelTest extends TestCase
         $this->loginUser();
     }
 
-
     protected function getEnvironmentSetUp($app)
     {
         config(['app.debug' => true]);
