@@ -16,25 +16,10 @@ checks:
 
 filter:
      paths: [src/*]
-     excluded_paths: [tests/*]
+     excluded_paths: ["tests/*"]
 
 coding_style:
      php: {  }
-
-build:
-    tests:
-        override:
-        -
-            command: 'vendor/bin/phpunit -c phpunit.xml'
-            coverage:
-                file: 'coverage/coverage-clover.xml'
-                format: 'clover'
-    nodes:
-        analysis:
-            tests:
-                override:
-                    - php-scrutinizer-run
-        tests: true
 
 tools:
     external_code_coverage: true
