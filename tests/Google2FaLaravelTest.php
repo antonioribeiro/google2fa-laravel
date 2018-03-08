@@ -2,6 +2,7 @@
 
 namespace PragmaRX\Google2FALaravel\Tests;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use PragmaRX\Google2FA\Tests\Constants;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
@@ -41,11 +42,11 @@ class Google2FaLaravelTest extends TestCase
         Auth::login($user);
     }
 
-    protected function postLogin()
+    protected function assertLogin($password = null, $message = 'google2fa passed')
     {
-        $this->assertEquals(
-            'google2fa passed',
-            $this->call('POST', 'login', ['one_time_password' => $this->getOTP()])->getContent()
+        $this->assertContains(
+            $message,
+            $this->call('POST', 'login', ['one_time_password' => $password])->getContent()
         );
     }
 
@@ -77,54 +78,55 @@ class Google2FaLaravelTest extends TestCase
 
     public function testRedirectToGoogle2FAView()
     {
-        $this->assertEquals(
-            "google2fa view\n",
+        $this->assertContains(
+            "google2fa view",
             $this->home()
         );
     }
 
     public function testGoogle2FAPostPasses()
     {
-        $this->postLogin();
+        $this->assertLogin($this->getOTP());
 
-        $this->assertEquals(
+        $this->assertContains(
             'we are home',
             $this->home()
         );
+    }
+
+    public function testWrongOTP()
+    {
+        $this->assertLogin('9999999', "google2fa view");
     }
 
     public function testGoogle2FAEmptyPassword()
     {
-        $this->assertContains(
-            'cannot be empty',
-            $this->call('POST', 'login', ['one_time_password' => null])->getContent()
-        );
+        $this->assertLogin('', 'cannot be empty');
+
+        $this->assertLogin(null, 'cannot be empty');
     }
 
     public function testLogout()
     {
-        $this->assertEquals(
-            "google2fa view\n",
+        $this->assertContains(
+            "google2fa view",
             $this->home()
         );
 
-        $this->assertEquals(
-            'google2fa passed',
-            $this->call('POST', 'login', ['one_time_password' => $this->getOTP()])->getContent()
-        );
+        $this->assertLogin($this->getOTP());
 
-        $this->assertEquals(
+        $this->assertContains(
             'we are home',
             $this->home()
         );
 
-        $this->assertEquals(
+        $this->assertContains(
             '',
             $this->call('POST', 'logout')->getContent()
         );
 
-        $this->assertEquals(
-            "google2fa view\n",
+        $this->assertContains(
+            "google2fa view",
             $this->home()
         );
     }
@@ -133,28 +135,25 @@ class Google2FaLaravelTest extends TestCase
     {
         config(['google2fa.forbid_old_passwords' => true]);
 
-        $this->assertEquals(
-            "google2fa view\n",
+        $this->assertContains(
+            "google2fa view",
             $this->home()
         );
 
-        $this->assertEquals(
-            'google2fa passed',
-            $this->call('POST', 'login', ['one_time_password' => $this->getOTP()])->getContent()
-        );
+        $this->assertLogin($this->getOTP());
 
-        $this->assertEquals(
+        $this->assertContains(
             'we are home',
             $this->home()
         );
 
-        $this->assertEquals(
+        $this->assertContains(
             '',
             $this->call('POST', 'logout')->getContent()
         );
 
-        $this->assertEquals(
-            "google2fa view\n",
+        $this->assertContains(
+            "google2fa view",
             $this->home()
         );
     }
@@ -179,5 +178,24 @@ class Google2FaLaravelTest extends TestCase
     public function getOTP()
     {
         return Google2FA::getCurrentOtp(Auth::user()->google2fa_secret);
+    }
+
+    public function testPasswordExpiration()
+    {
+        config(['google2fa.lifetime' => 1]);
+
+        $this->assertLogin($this->getOTP());
+
+        $this->assertContains(
+            'we are home',
+            $this->home()
+        );
+
+        Carbon::setTestNow(Carbon::now()->addMinutes(3));
+
+        $this->assertContains(
+            "google2fa view",
+            $this->home()
+        );
     }
 }

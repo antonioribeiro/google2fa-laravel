@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request as IlluminateRequest;
 use PragmaRX\Google2FA\Google2FA as Google2FAService;
 use PragmaRX\Google2FA\Support\Constants as Google2FAConstants;
+use PragmaRX\Google2FALaravel\Events\LoggedOut;
+use PragmaRX\Google2FALaravel\Events\OneTimePasswordExpired;
 use PragmaRX\Google2FALaravel\Exceptions\InvalidSecretKey;
 use PragmaRX\Google2FALaravel\Support\Auth;
 use PragmaRX\Google2FALaravel\Support\Config;
@@ -131,6 +133,8 @@ class Google2FA extends Google2FAService
     protected function passwordExpired()
     {
         if (($minutes = $this->config('lifetime')) !== 0 && $this->minutesSinceLastActivity() > $minutes) {
+            event(new OneTimePasswordExpired($this->getUser()));
+
             $this->logout();
 
             return true;
@@ -178,7 +182,11 @@ class Google2FA extends Google2FAService
      */
     public function logout()
     {
+        $user = $this->getUser();
+
         $this->sessionForget();
+
+        event(new LoggedOut($user));
     }
 
     /**

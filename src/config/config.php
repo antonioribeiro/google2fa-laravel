@@ -65,4 +65,9 @@ return [
         'wrong_otp' => "The 'One Time Password' typed was wrong.",
     ],
 
+    /*
+     * Throw exceptions or just fire events?
+     */
+    'throw_exceptions' => true,
+
 ];

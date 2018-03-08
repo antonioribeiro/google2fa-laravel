@@ -2,9 +2,10 @@
 
 namespace PragmaRX\Google2FALaravel\Support;
 
-use Illuminate\Http\JsonResponse as IlluminateJsonResponse;
 use Illuminate\Http\Response as IlluminateHtmlResponse;
+use Illuminate\Http\JsonResponse as IlluminateJsonResponse;
 use PragmaRX\Google2FALaravel\Events\OneTimePasswordRequested;
+use PragmaRX\Google2FALaravel\Events\OneTimePasswordRequested53;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 trait Response
@@ -14,7 +15,7 @@ trait Response
      *
      * @param $statusCode
      *
-     * @return JsonResponse
+     * @return IlluminateJsonResponse
      */
     protected function makeJsonResponse($statusCode)
     {
@@ -64,7 +65,7 @@ trait Response
     {
         event(
             app()->version() < '5.4'
-                ? new OneTimePasswordRequestedL53($this->getUser())
+                ? new OneTimePasswordRequested53($this->getUser())
                 : new OneTimePasswordRequested($this->getUser())
         );
 
