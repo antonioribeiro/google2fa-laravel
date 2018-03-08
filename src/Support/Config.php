@@ -8,20 +8,18 @@ trait Config
      * Get a config value.
      *
      * @param $string
-     * @param array $children
-     *
      * @throws \Exception
-     *
      * @return mixed
      */
-    protected function config($string, $children = [])
+    protected function config($string, $default = null)
     {
         if (is_null(config($config = Constants::CONFIG_PACKAGE_NAME))) {
             throw new \Exception("Config ({$config}.php) not found. Have you published it?");
         }
 
         return config(
-            implode('.', array_merge([Constants::CONFIG_PACKAGE_NAME, $string], (array) $children))
+            implode('.', [Constants::CONFIG_PACKAGE_NAME, $string]),
+            $default
         );
     }
 }

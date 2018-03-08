@@ -72,7 +72,7 @@ class Authenticator extends Google2FA
         if (is_null($password = $this->getInputOneTimePassword()) || empty($password)) {
             event(new EmptyOneTimePasswordReceived());
 
-            if ($this->config('throw_exceptions')) {
+            if ($this->config('throw_exceptions', true)) {
                 throw new InvalidOneTimePassword('One Time Password cannot be empty.');
             }
         }

@@ -61,6 +61,31 @@ class Google2FaLaravelTest extends TestCase
         $this->loginUser();
     }
 
+
+    protected function getEnvironmentSetUp($app)
+    {
+        config(['app.debug' => true]);
+
+        $app['router']->get('home', ['as' => 'home', 'uses' => function () {
+            return 'we are home';
+        }])->middleware(\PragmaRX\Google2FALaravel\Middleware::class);
+
+        $app['router']->post('login', ['as' => 'login.post', 'uses' => function () {
+            return 'google2fa passed';
+        }])->middleware(\PragmaRX\Google2FALaravel\Middleware::class);
+
+        $app['router']->post('logout', ['as' => 'logout.post', 'uses' => function () {
+            Google2FA::logout();
+        }]);
+    }
+
+    public function getOTP()
+    {
+        return Google2FA::getCurrentOtp(Auth::user()->google2fa_secret);
+    }
+
+    // --------------------------------------------- tests
+
     public function testCanInstantiate()
     {
         $this->assertEquals(16, strlen(Google2FA::generateSecretKey()));
@@ -97,13 +122,6 @@ class Google2FaLaravelTest extends TestCase
     public function testWrongOTP()
     {
         $this->assertLogin('9999999', 'google2fa view');
-    }
-
-    public function testGoogle2FAEmptyPassword()
-    {
-        $this->assertLogin('', 'cannot be empty');
-
-        $this->assertLogin(null, 'cannot be empty');
     }
 
     public function testLogout()
@@ -158,28 +176,6 @@ class Google2FaLaravelTest extends TestCase
         );
     }
 
-    protected function getEnvironmentSetUp($app)
-    {
-        config(['app.debug' => true]);
-
-        $app['router']->get('home', ['as' => 'home', 'uses' => function () {
-            return 'we are home';
-        }])->middleware(\PragmaRX\Google2FALaravel\Middleware::class);
-
-        $app['router']->post('login', ['as' => 'login.post', 'uses' => function () {
-            return 'google2fa passed';
-        }])->middleware(\PragmaRX\Google2FALaravel\Middleware::class);
-
-        $app['router']->post('logout', ['as' => 'logout.post', 'uses' => function () {
-            Google2FA::logout();
-        }]);
-    }
-
-    public function getOTP()
-    {
-        return Google2FA::getCurrentOtp(Auth::user()->google2fa_secret);
-    }
-
     public function testPasswordExpiration()
     {
         config(['google2fa.lifetime' => 1]);
@@ -197,5 +193,12 @@ class Google2FaLaravelTest extends TestCase
             'google2fa view',
             $this->home()
         );
+    }
+
+    public function testGoogle2FAEmptyPassword()
+    {
+        $this->assertLogin('', 'cannot be empty');
+
+        $this->assertLogin(null, 'cannot be empty');
     }
 }
