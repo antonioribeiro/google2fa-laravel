@@ -25,7 +25,7 @@ class Authenticator extends Google2FA
      *
      * @var
      */
-    protected $apiUsage = false;
+    protected $stateless = false;
 
     /**
      * Authenticator constructor.
@@ -62,7 +62,7 @@ class Authenticator extends Google2FA
     {
         parent::boot($request);
 
-        $this->apiUsage = true;
+        $this->stateless = true;
 
         return $this;
     }
