@@ -25,7 +25,7 @@ trait Session
      */
     public function sessionGet($var = null, $default = null)
     {
-        if($this->stateless) {
+        if ($this->stateless) {
             return $default;
         }
 
@@ -45,7 +45,7 @@ trait Session
      */
     protected function sessionPut($var, $value)
     {
-        if($this->stateless) {
+        if ($this->stateless) {
             return $value;
         }
 
@@ -64,7 +64,7 @@ trait Session
      */
     protected function sessionForget($var = null)
     {
-        if($this->stateless) {
+        if ($this->stateless) {
             return;
         }
 
