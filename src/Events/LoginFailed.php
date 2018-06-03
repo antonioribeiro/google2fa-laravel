@@ -2,13 +2,14 @@
 
 namespace PragmaRX\Google2FALaravel\Events;
 
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Foundation\Events\Dispatchable;
+//use Illuminate\Broadcasting\InteractsWithSockets;
+//use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
 class LoginFailed
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    //use Dispatchable, InteractsWithSockets, SerializesModels;
+    use SerializesModels;
 
     public $user;
 
