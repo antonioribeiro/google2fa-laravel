@@ -46,6 +46,12 @@ You can scan the QR code on [this (old) demo page](https://antoniocarlosribeiro.
 
 Before Google2FA 2.0 (Laravel 5.1) you have to install `pragmarx/google2fa:~1.0`, because this package was both a Laravel package and a PHP (agnostic).   
 
+## Demo
+
+Click [here](https://pragmarx.com/google2fa/middleware) to see the middleware demo:
+
+![middleware](docs/middleware.jpg)
+
 ## Installing
 
 Use Composer to install it:
@@ -99,14 +105,6 @@ return $google2fa->generateSecretKey();
 ## Middleware
 
 This package has a middleware which will help you code 2FA on your app. To use it, you just have to:
-
-## Demo
-
-Click [here](https://pragmarx.com/google2fa/middleware) to see the middleware demo:
-
-![middleware](docs/middleware.jpg)
-
-## Using the middleware
 
 ### Add the middleware to your Kernel.php:
 
