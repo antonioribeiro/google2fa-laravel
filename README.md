@@ -165,7 +165,7 @@ Usually an OTP lasts forever, until the user logs off your app, but, to improve 
 'lifetime' => 0, // 0 = eternal
 ```
 
-And you can decider whether your OTP will be kept alive while your users are browsing the site or not:
+And you can decide whether your OTP will be kept alive while your users are browsing the site or not:
 
 ``` php
 /**
