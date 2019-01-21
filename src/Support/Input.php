@@ -11,7 +11,7 @@ trait Input
      */
     protected function inputHasOneTimePassword()
     {
-        return $this->getRequest()->has($this->config('otp_input'));
+        return !empty($this->getInputOneTimePassword());
     }
 
     protected function getInputOneTimePassword()
