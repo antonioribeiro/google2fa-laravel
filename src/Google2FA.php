@@ -3,17 +3,17 @@
 namespace PragmaRX\Google2FALaravel;
 
 use Carbon\Carbon;
-use Illuminate\Http\Request as IlluminateRequest;
-use PragmaRX\Google2FA\Google2FA as Google2FAService;
-use PragmaRX\Google2FA\Support\Constants as Google2FAConstants;
-use PragmaRX\Google2FALaravel\Events\LoggedOut;
-use PragmaRX\Google2FALaravel\Events\OneTimePasswordExpired;
-use PragmaRX\Google2FALaravel\Exceptions\InvalidSecretKey;
 use PragmaRX\Google2FALaravel\Support\Auth;
 use PragmaRX\Google2FALaravel\Support\Config;
-use PragmaRX\Google2FALaravel\Support\Constants;
 use PragmaRX\Google2FALaravel\Support\Request;
 use PragmaRX\Google2FALaravel\Support\Session;
+use PragmaRX\Google2FALaravel\Events\LoggedOut;
+use PragmaRX\Google2FALaravel\Support\Constants;
+use Illuminate\Http\Request as IlluminateRequest;
+use PragmaRX\Google2FALaravel\Exceptions\InvalidSecretKey;
+use PragmaRX\Google2FAQRCode\Google2FA as Google2FAService;
+use PragmaRX\Google2FALaravel\Events\OneTimePasswordExpired;
+use PragmaRX\Google2FA\Support\Constants as Google2FAConstants;
 
 class Google2FA extends Google2FAService
 {
@@ -27,6 +27,8 @@ class Google2FA extends Google2FAService
     public function __construct(IlluminateRequest $request)
     {
         $this->boot($request);
+
+        parent::__construct();
     }
 
     /**

@@ -4,7 +4,6 @@ namespace PragmaRX\Google2FALaravel\Tests;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use PragmaRX\Google2FA\Tests\Constants;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use PragmaRX\Google2FALaravel\Tests\Support\User;
 
@@ -199,5 +198,19 @@ class Google2FaLaravelTest extends TestCase
         $this->assertLogin('', 'cannot be empty');
 
         $this->assertLogin(null, 'cannot be empty');
+    }
+
+    public function testQrcodeInline()
+    {
+        $qrCode = Google2FA::getQRCodeInline('company name', 'email@company.com', Constants::SECRET);
+
+        $this->assertTrue(
+            strlen($qrCode) > 4096
+        );
+
+        $this->assertStringStartsWith(
+            'data:image/png;base64',
+            $qrCode
+        );
     }
 }
