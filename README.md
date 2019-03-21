@@ -211,6 +211,15 @@ if ($authenticator->isAuthenticated()) {
 }
 ```
 
+You can also use a stateless middleware: 
+
+``` php
+protected $routeMiddleware = [
+    ...
+    '2fa' => \PragmaRX\Google2FALaravel\MiddlewareStateless::class,
+];
+```
+
 ## Events
 
 The following events are fired:
