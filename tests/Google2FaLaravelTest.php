@@ -16,7 +16,7 @@ class Google2FaLaravelTest extends TestCase
      */
     private function createEmptyRequest()
     {
-        return $request = (new Request)->createFromBase(
+        return $request = (new Request())->createFromBase(
             \Symfony\Component\HttpFoundation\Request::create(
                 '/',
                 'GET'

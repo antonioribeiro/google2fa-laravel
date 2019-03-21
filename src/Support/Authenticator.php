@@ -2,12 +2,12 @@
 
 namespace PragmaRX\Google2FALaravel\Support;
 
-use PragmaRX\Google2FALaravel\Google2FA;
 use Illuminate\Http\Request as IlluminateRequest;
+use PragmaRX\Google2FALaravel\Events\EmptyOneTimePasswordReceived;
 use PragmaRX\Google2FALaravel\Events\LoginFailed;
 use PragmaRX\Google2FALaravel\Events\LoginSucceeded;
 use PragmaRX\Google2FALaravel\Exceptions\InvalidOneTimePassword;
-use PragmaRX\Google2FALaravel\Events\EmptyOneTimePasswordReceived;
+use PragmaRX\Google2FALaravel\Google2FA;
 
 class Authenticator extends Google2FA
 {
@@ -170,8 +170,9 @@ class Authenticator extends Google2FA
     /**
      * Verify the OTP.
      *
-     * @return mixed
      * @throws InvalidOneTimePassword
+     *
+     * @return mixed
      */
     protected function verifyOneTimePassword()
     {
