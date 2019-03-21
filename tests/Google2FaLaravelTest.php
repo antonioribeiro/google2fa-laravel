@@ -205,7 +205,7 @@ class Google2FaLaravelTest extends TestCase
         $qrCode = Google2FA::getQRCodeInline('company name', 'email@company.com', Constants::SECRET);
 
         $this->assertTrue(
-            strlen($qrCode) > 4096
+            strlen($qrCode) > 2048
         );
 
         $this->assertStringStartsWith(
