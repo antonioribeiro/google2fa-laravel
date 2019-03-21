@@ -201,6 +201,16 @@ Route::get('/admin', function () {
 })->middleware(['auth', '2fa', 'throttle']);
 ```
 
+## Stateless usage
+
+```php
+$authenticator = app(Authenticator::class)->bootStateless($request);
+
+if ($authenticator->isAuthenticated()) {
+    // otp auth success!
+}
+```
+
 ## Events
 
 The following events are fired:

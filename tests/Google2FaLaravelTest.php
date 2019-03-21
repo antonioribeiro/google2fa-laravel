@@ -3,18 +3,44 @@
 namespace PragmaRX\Google2FALaravel\Tests;
 
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
+use PragmaRX\Google2FALaravel\Support\Authenticator;
 use PragmaRX\Google2FALaravel\Tests\Support\User;
 
 class Google2FaLaravelTest extends TestCase
 {
+    /**
+     * @return \Illuminate\Http\Request
+     */
+    private function createEmptyRequest()
+    {
+        return $request = (new Request)->createFromBase(
+            \Symfony\Component\HttpFoundation\Request::create(
+                '/',
+                'GET'
+            )
+        );
+    }
+
     protected function getPackageProviders($app)
     {
         return [
             \PragmaRX\Google2FALaravel\ServiceProvider::class,
             \Illuminate\Auth\AuthServiceProvider::class,
         ];
+    }
+
+    public function setUp()
+    {
+        parent::setup();
+
+        $this->app->make('Illuminate\Contracts\Http\Kernel')->pushMiddleware('Illuminate\Session\Middleware\StartSession');
+
+        \View::addLocation(__DIR__.'/views');
+
+        $this->loginUser();
     }
 
     protected function getPackageAliases($app)
@@ -47,17 +73,6 @@ class Google2FaLaravelTest extends TestCase
             $message,
             $this->call('POST', 'login', ['one_time_password' => $password])->getContent()
         );
-    }
-
-    public function setUp()
-    {
-        parent::setup();
-
-        $this->app->make('Illuminate\Contracts\Http\Kernel')->pushMiddleware('Illuminate\Session\Middleware\StartSession');
-
-        \View::addLocation(__DIR__.'/views');
-
-        $this->loginUser();
     }
 
     protected function getEnvironmentSetUp($app)
@@ -212,5 +227,12 @@ class Google2FaLaravelTest extends TestCase
         $this->assertTrue(
             strlen($qrCode) > 1024
         );
+    }
+
+    public function testStateless()
+    {
+        $authenticator = app(Authenticator::class)->bootStateless($this->createEmptyRequest());
+
+        $this->assertFalse($authenticator->isAuthenticated());
     }
 }
