@@ -1,5 +1,16 @@
 ## Change Log
 
+## [1.0.0] - 2019-03-21
+- Start using Google2FA QRCode as base class
+- Support QRCode generation again
+- Support API / Stateless requests
+
+## [0.3.0] - 2019-03-20
+- Upgrade to GoogleFA 5.0
+
+## [0.2.1] - 2019-03-20
+- Removed QRCode generation via Google2FA 4.0
+
 ## [0.2.0] - 2018-03-07
 ### Add
 - Firing events: 
