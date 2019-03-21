@@ -191,6 +191,16 @@ use PragmaRX\Google2FALaravel\Support\Authenticator;
 (new Authenticator(request()))->logout();
 ```
 
+## Throttling / Lockout after X attempts
+
+Unless you need somethig really fancy, you can probably use Laravel's [route throttle middleware](https://laravel.com/docs/5.8/middleware) for that:
+ 
+```php
+Route::get('/admin', function () {
+    return view('admin.index');
+})->middleware(['auth', '2fa', 'throttle']);
+```
+
 ## Events
 
 The following events are fired:
