@@ -30,11 +30,10 @@ trait ErrorBag
      */
     protected function getErrorBagForStatusCode($statusCode)
     {
-        if($statusCode == SymfonyResponse::HTTP_UNPROCESSABLE_ENTITY) {
-            return $this->createErrorBagForMessage(
-                config('google2fa.error_messages.wrong_otp')
-            );
-        }
-        return 'unknown error';
+        return $this->createErrorBagForMessage(
+            ($statusCode == SymfonyResponse::HTTP_UNPROCESSABLE_ENTITY) ? 
+                config('google2fa.error_messages.wrong_otp') : 
+                'unknown error'
+        );
     }
 }
