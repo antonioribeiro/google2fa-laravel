@@ -32,7 +32,7 @@ trait Response
      */
     protected function makeStatusCode()
     {
-        return ! $this->checkOTP()
+        return !$this->checkOTP()
             ? SymfonyResponse::HTTP_UNPROCESSABLE_ENTITY
             : SymfonyResponse::HTTP_OK;
     }
