@@ -34,6 +34,24 @@ class ServiceProvider extends IlluminateServiceProvider
     }
 
     /**
+     * Configure translation translations.
+     */
+    private function configureTranslations()
+    {
+        $this->loadTranslationsFrom(__DIR__.'/lang', 'google2fa');
+    }
+
+    /**
+     * Merge translations.
+     */
+    private function mergeTranslations()
+    {
+        $this->publishes([
+            __DIR__.'/lang' => resource_path('lang/vendor/google2fa')
+        ]);
+    }
+
+    /**
      * Get the services provided by the provider.
      *
      * @return array
@@ -41,6 +59,16 @@ class ServiceProvider extends IlluminateServiceProvider
     public function provides()
     {
         return ['pragmarx.google2fa'];
+    }
+
+    /**
+     * Perform post-registration booting of services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->loadTranslationsFrom(__DIR__.'/locales', 'google2fa');
     }
 
     /**
@@ -58,4 +86,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
         $this->mergeConfig();
     }
+
+    
 }
