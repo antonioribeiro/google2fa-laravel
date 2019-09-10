@@ -11,7 +11,7 @@ use PragmaRX\Google2FALaravel\Google2FA;
 
 class Authenticator extends Google2FA
 {
-    use ErrorBag, Input, Response;
+    use ErrorBag, Input, Response, Session;
 
     /**
      * The current password.
@@ -19,13 +19,6 @@ class Authenticator extends Google2FA
      * @var
      */
     protected $password;
-
-    /**
-     * Flag to disable the session for API usage.
-     *
-     * @var
-     */
-    protected $stateless = false;
 
     /**
      * Authenticator constructor.
@@ -104,14 +97,6 @@ class Authenticator extends Google2FA
     }
 
     /**
-     * @return mixed
-     */
-    public function getStateless()
-    {
-        return $this->stateless;
-    }
-
-    /**
      * Check if the current use is authenticated via OTP.
      *
      * @return bool
@@ -153,18 +138,6 @@ class Authenticator extends Google2FA
         }
 
         return $this->fireLoginEvent($isValid);
-    }
-
-    /**
-     * @param mixed $stateless
-     *
-     * @return Authenticator
-     */
-    public function setStateless($stateless = true)
-    {
-        $this->stateless = $stateless;
-
-        return $this;
     }
 
     /**

@@ -162,6 +162,20 @@ class Google2FaLaravelTest extends TestCase
         );
     }
 
+    public function testLogin()
+    {
+        $this->startSession();
+
+        $request = $this->createEmptyRequest();
+        $request->setLaravelSession($this->app['session']);
+
+        $authenticator = app(\PragmaRX\Google2FALaravel\Google2FA::class)->boot($request);
+
+        $authenticator->login();
+
+        $this->assertTrue($request->getSession()->get('google2fa.auth_passed'));
+    }
+
     public function testOldPasswords()
     {
         config(['google2fa.forbid_old_passwords' => true]);
