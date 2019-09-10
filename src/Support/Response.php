@@ -32,10 +32,9 @@ trait Response
      */
     protected function makeStatusCode()
     {
-        return
-            $this->inputHasOneTimePassword() && !$this->checkOTP()
-                ? SymfonyResponse::HTTP_UNPROCESSABLE_ENTITY
-                : SymfonyResponse::HTTP_OK;
+        return !$this->checkOTP()
+            ? SymfonyResponse::HTTP_UNPROCESSABLE_ENTITY
+            : SymfonyResponse::HTTP_OK;
     }
 
     /**
