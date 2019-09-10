@@ -32,7 +32,7 @@ class Google2FaLaravelTest extends TestCase
         ];
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setup();
 
@@ -69,7 +69,7 @@ class Google2FaLaravelTest extends TestCase
 
     protected function assertLogin($password = null, $message = 'google2fa passed')
     {
-        $this->assertContains(
+        $this->assertStringContainsString(
             $message,
             $this->call('POST', 'login', ['one_time_password' => $password])->getContent()
         );
@@ -116,7 +116,7 @@ class Google2FaLaravelTest extends TestCase
 
     public function testRedirectToGoogle2FAView()
     {
-        $this->assertContains(
+        $this->assertStringContainsString(
             'google2fa view',
             $this->home()
         );
@@ -126,7 +126,7 @@ class Google2FaLaravelTest extends TestCase
     {
         $this->assertLogin($this->getOTP());
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'we are home',
             $this->home()
         );
@@ -139,24 +139,24 @@ class Google2FaLaravelTest extends TestCase
 
     public function testLogout()
     {
-        $this->assertContains(
+        $this->assertStringContainsString(
             'google2fa view',
             $this->home()
         );
 
         $this->assertLogin($this->getOTP());
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'we are home',
             $this->home()
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '',
             $this->call('POST', 'logout')->getContent()
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'google2fa view',
             $this->home()
         );
@@ -180,24 +180,24 @@ class Google2FaLaravelTest extends TestCase
     {
         config(['google2fa.forbid_old_passwords' => true]);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'google2fa view',
             $this->home()
         );
 
         $this->assertLogin($this->getOTP());
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'we are home',
             $this->home()
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '',
             $this->call('POST', 'logout')->getContent()
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'google2fa view',
             $this->home()
         );
@@ -209,14 +209,14 @@ class Google2FaLaravelTest extends TestCase
 
         $this->assertLogin($this->getOTP());
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'we are home',
             $this->home()
         );
 
         Carbon::setTestNow(Carbon::now()->addMinutes(3));
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'google2fa view',
             $this->home()
         );
