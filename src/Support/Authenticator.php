@@ -89,7 +89,7 @@ class Authenticator extends Google2FA
             event(new EmptyOneTimePasswordReceived());
 
             if ($this->config('throw_exceptions', true)) {
-                throw new InvalidOneTimePassword('One Time Password cannot be empty.');
+                throw new InvalidOneTimePassword(config('google2fa.error_messages.cannot_be_empty'));
             }
         }
 
@@ -103,9 +103,7 @@ class Authenticator extends Google2FA
      */
     public function isAuthenticated()
     {
-        return $this->canPassWithoutCheckingOTP()
-            ? true
-            : $this->checkOTP();
+        return $this->canPassWithoutCheckingOTP() || $this->checkOTP();
     }
 
     /**
