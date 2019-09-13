@@ -5,12 +5,15 @@ namespace PragmaRX\Google2FALaravel\Tests;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PragmaRX\Google2FALaravel\Tests\Support\User;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use PragmaRX\Google2FALaravel\Support\Authenticator;
-use PragmaRX\Google2FALaravel\Tests\Support\User;
+use PragmaRX\Google2FALaravel\Exceptions\InvalidOneTimePassword;
 
 class Google2FaLaravelTest extends TestCase
 {
+    const VIEW_ERROR_MESSAGE = 'WRONG OTP';
+
     /**
      * @return \Illuminate\Http\Request
      */
@@ -69,10 +72,21 @@ class Google2FaLaravelTest extends TestCase
 
     protected function assertLogin($password = null, $message = 'google2fa passed')
     {
+        config(['google2fa.error_messages.wrong_otp' => self::VIEW_ERROR_MESSAGE]);
+
+        $renderedView = $this->call('POST', 'login', ['one_time_password' => $password])->getContent();
+
         $this->assertStringContainsString(
             $message,
-            $this->call('POST', 'login', ['one_time_password' => $password])->getContent()
+            $renderedView
         );
+
+        if ($message !== self::VIEW_ERROR_MESSAGE) {
+            $this->assertStringNotContainsString(
+                self::VIEW_ERROR_MESSAGE,
+                $renderedView
+            );
+        }
     }
 
     protected function getEnvironmentSetUp($app)
@@ -134,7 +148,7 @@ class Google2FaLaravelTest extends TestCase
 
     public function testWrongOTP()
     {
-        $this->assertLogin('9999999', 'google2fa view');
+        $this->assertLogin('9999999', self::VIEW_ERROR_MESSAGE);
     }
 
     public function testLogout()
@@ -224,9 +238,9 @@ class Google2FaLaravelTest extends TestCase
 
     public function testGoogle2FAEmptyPassword()
     {
-        $this->assertLogin('', 'cannot be empty');
+        $this->assertLogin('', $message = config('google2fa.error_messages.cannot_be_empty'));
 
-        $this->assertLogin(null, 'cannot be empty');
+        $this->assertLogin(null, $message);
     }
 
     public function testQrcodeInline()
@@ -248,5 +262,15 @@ class Google2FaLaravelTest extends TestCase
         $authenticator = app(Authenticator::class)->bootStateless($this->createEmptyRequest());
 
         $this->assertFalse($authenticator->isAuthenticated());
+    }
+
+    public function testViewError()
+    {
+        config(['google2fa.error_messages.wrong_otp' => self::VIEW_ERROR_MESSAGE]);
+
+        $this->assertStringContainsString(
+            self::VIEW_ERROR_MESSAGE,
+            $this->call('POST', 'login', ['input_one_time_password_missing' => 'missing'])->getContent()
+        );
     }
 }
