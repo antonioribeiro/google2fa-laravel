@@ -1,5 +1,13 @@
 ## Change Log
 
+## [1.1.1] - 2019-03-12
+### Removed
+- PHP 7.0 support
+
+## [1.1.0] - 2019-09-10
+### Added
+- Laravel 6 support
+
 ## [1.0.0] - 2019-03-21
 - Start using Google2FA QRCode as base class
 - Support QRCode generation again
