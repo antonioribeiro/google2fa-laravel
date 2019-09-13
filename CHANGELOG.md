@@ -1,5 +1,10 @@
 ## Change Log
 
+## [1.1.2] - 2019-03-13
+### Added
+- New config item for empty OTP error messages: 'cannot_be_empty' => 'One Time Password cannot be empty.',  
+- Tests to check for HTML error messages
+
 ## [1.1.1] - 2019-03-12
 ### Removed
 - PHP 7.0 support
