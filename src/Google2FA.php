@@ -32,7 +32,7 @@ class Google2FA extends Google2FAService
             case 'svg':
                 parent::__construct(new \BaconQrCode\Renderer\Image\SvgImageBackEnd());
                 break;
-            
+
             case 'eps':
                 parent::__construct(new \BaconQrCode\Renderer\Image\EpsImageBackEnd());
                 break;
