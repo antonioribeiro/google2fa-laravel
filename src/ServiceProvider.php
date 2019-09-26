@@ -37,7 +37,7 @@ class ServiceProvider extends IlluminateServiceProvider
             return $app->make(Google2FA::class);
         });
     }
-    
+
     public function boot()
     {
         $this->configurePaths();
