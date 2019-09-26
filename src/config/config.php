@@ -69,6 +69,12 @@ return [
     /*
      * Throw exceptions or just fire events?
      */
-    'throw_exceptions' => true,
+    'throw_exceptions' => false,
+
+    /*
+     * Which image backend to use for generating QR codes?
+     * (svg, eps, or null for ImageMagick)
+     */
+    'qr_image_backend' => 'svg',
 
 ];
