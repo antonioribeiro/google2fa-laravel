@@ -1,7 +1,5 @@
 <?php
 
-use PragmaRX\Google2FA\Tests\Constants;
-
 return [
 
     /*

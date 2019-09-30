@@ -46,6 +46,7 @@ class Google2FA extends Google2FAService
      * Set the QRCode Backend.
      *
      * @param string $qrCodeBackend
+     *
      * @return self
      */
     public function setQrCodeBackend(string $qrCodeBackend)
