@@ -1,5 +1,7 @@
 <?php
 
+use PragmaRX\Google2FA\Tests\Constants;
+
 return [
 
     /*
@@ -74,8 +76,9 @@ return [
 
     /*
      * Which image backend to use for generating QR codes?
-     * (svg, eps, or null for ImageMagick)
+     *
+     * Supports imagemagick, svg and eps
      */
-    'qr_image_backend' => null,
+    'qrcode_image_backend' => \PragmaRX\Google2FALaravel\Support\Constants::QRCODE_IMAGE_BACKEND_IMAGEMAGICK,
 
 ];

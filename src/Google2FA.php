@@ -19,6 +19,42 @@ class Google2FA extends Google2FAService
 {
     use Auth, Config, Request, Session;
 
+    protected $qrCodeBackend;
+
+    /**
+     * Construct the correct backend.
+     */
+    protected function constructBackend(): void
+    {
+        switch ($this->getQRCodeBackend()) {
+            case Constants::QRCODE_IMAGE_BACKEND_SVG:
+                parent::__construct(new \BaconQrCode\Renderer\Image\SvgImageBackEnd());
+                break;
+
+            case Constants::QRCODE_IMAGE_BACKEND_EPS:
+                parent::__construct(new \BaconQrCode\Renderer\Image\EpsImageBackEnd());
+                break;
+
+            case Constants::QRCODE_IMAGE_BACKEND_IMAGEMAGICK:
+            default:
+                parent::__construct();
+                break;
+        }
+    }
+
+    /**
+     * Set the QRCode Backend.
+     *
+     * @param string $qrCodeBackend
+     * @return self
+     */
+    public function setQrCodeBackend(string $qrCodeBackend)
+    {
+        $this->qrCodeBackend = $qrCodeBackend;
+
+        return $this;
+    }
+
     /**
      * Authenticator constructor.
      *
@@ -28,20 +64,7 @@ class Google2FA extends Google2FAService
     {
         $this->boot($request);
 
-        switch ($this->config('qr_image_backend')) {
-            case 'svg':
-                parent::__construct(new \BaconQrCode\Renderer\Image\SvgImageBackEnd());
-                break;
-
-            case 'eps':
-                parent::__construct(new \BaconQrCode\Renderer\Image\EpsImageBackEnd());
-                break;
-
-            default:
-                parent::__construct();
-                break;
-
-        }
+        $this->constructBackend();
     }
 
     /**
@@ -56,6 +79,17 @@ class Google2FA extends Google2FAService
         $this->setRequest($request);
 
         return $this;
+    }
+
+    /**
+     * The QRCode Backend.
+     *
+     * @return mixed
+     */
+    public function getQRCodeBackend()
+    {
+        return $this->qrCodeBackend
+            ?: $this->config('qrcode_image_backend', Constants::QRCODE_IMAGE_BACKEND_IMAGEMAGICK);
     }
 
     /**

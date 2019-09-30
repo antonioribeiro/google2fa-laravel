@@ -122,6 +122,27 @@ Route::get('/admin', function () {
 })->middleware(['auth', '2fa']);
 ```
 
+### QRCode Backend
+
+There are three available: **imagemagick** (default), **svg** and **eps**. 
+
+You can hange it via config:
+
+``` php
+/*
+ * Which image backend to use for generating QR codes?
+ *
+ * Supports imagemagick, svg and eps
+ */
+'qrcode_image_backend' => \PragmaRX\Google2FALaravel\Support\Constants::QRCODE_IMAGE_BACKEND_IMAGEMAGICK,
+```
+ 
+Or runtime:
+
+``` php
+Google2FA::setQRCodeBackend('svg');
+```
+
 ### Configuring the view
 
 You can set your 'ask for a one time password' view in the config file (config/google2fa.php):

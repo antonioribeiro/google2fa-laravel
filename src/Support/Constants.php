@@ -11,4 +11,10 @@ class Constants
     const SESSION_AUTH_TIME = 'auth_time';
 
     const SESSION_OTP_TIMESTAMP = 'otp_timestamp';
+
+    const QRCODE_IMAGE_BACKEND_EPS = 'eps';
+
+    const QRCODE_IMAGE_BACKEND_SVG = 'svg';
+
+    const QRCODE_IMAGE_BACKEND_IMAGEMAGICK = 'imagemagick';
 }

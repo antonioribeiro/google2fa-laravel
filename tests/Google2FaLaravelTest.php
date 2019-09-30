@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use PragmaRX\Google2FALaravel\Support\Authenticator;
 use PragmaRX\Google2FALaravel\Tests\Support\User;
+use PragmaRX\Google2FALaravel\Support\Constants as PackageConstants;
 
 class Google2FaLaravelTest extends TestCase
 {
@@ -270,6 +271,21 @@ class Google2FaLaravelTest extends TestCase
         $this->assertStringContainsString(
             self::VIEW_ERROR_MESSAGE,
             $this->call('POST', 'login', ['input_one_time_password_missing' => 'missing'])->getContent()
+        );
+    }
+
+    public function testQrCodeBackend()
+    {
+        $this->assertEquals(
+            PackageConstants::QRCODE_IMAGE_BACKEND_IMAGEMAGICK,
+            Google2FA::getQRCodeBackend()
+        );
+
+        Google2FA::setQRCodeBackend('svg');
+
+        $this->assertEquals(
+            PackageConstants::QRCODE_IMAGE_BACKEND_SVG,
+            Google2FA::getQRCodeBackend()
         );
     }
 }
