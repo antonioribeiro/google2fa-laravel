@@ -69,7 +69,7 @@ return [
     /*
      * Throw exceptions or just fire events?
      */
-    'throw_exceptions' => false,
+    'throw_exceptions' => true,
 
     /*
      * Which image backend to use for generating QR codes?
