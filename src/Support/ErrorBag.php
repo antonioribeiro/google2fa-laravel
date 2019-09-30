@@ -35,7 +35,7 @@ trait ErrorBag
                 config(
                     $statusCode == SymfonyResponse::HTTP_UNPROCESSABLE_ENTITY
                         ? 'google2fa.error_messages.wrong_otp'
-                        : 'unknown error'
+                        : 'google2fa.error_messages.unknown'
                 )
             )
         );
