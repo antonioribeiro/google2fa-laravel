@@ -64,6 +64,7 @@ return [
     'error_messages' => [
         'wrong_otp'       => "The 'One Time Password' typed was wrong.",
         'cannot_be_empty' => 'One Time Password cannot be empty.',
+        'unknown'         => 'An unknown error has occurred. Please try again.',
     ],
 
     /*
