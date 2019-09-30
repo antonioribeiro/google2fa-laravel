@@ -72,4 +72,10 @@ return [
      */
     'throw_exceptions' => true,
 
+    /*
+     * Which image backend to use for generating QR codes?
+     * (svg, eps, or null for ImageMagick)
+     */
+    'qr_image_backend' => null,
+
 ];

@@ -28,7 +28,20 @@ class Google2FA extends Google2FAService
     {
         $this->boot($request);
 
-        parent::__construct();
+        switch ($this->config('qr_image_backend')) {
+            case 'svg':
+                parent::__construct(new \BaconQrCode\Renderer\Image\SvgImageBackEnd());
+                break;
+
+            case 'eps':
+                parent::__construct(new \BaconQrCode\Renderer\Image\EpsImageBackEnd());
+                break;
+
+            default:
+                parent::__construct();
+                break;
+
+        }
     }
 
     /**
