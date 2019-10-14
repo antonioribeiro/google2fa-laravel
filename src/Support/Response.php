@@ -27,12 +27,13 @@ trait Response
 
     /**
      * Make the status code, to respond accordingly.
+     * Always returns HTTP_OK if the user did not enter an OTP, and check it if so.
      *
      * @return int
      */
     protected function makeStatusCode()
     {
-        return !$this->checkOTP()
+        return $this->inputHasOneTimePassword() && !$this->checkOTP()
             ? SymfonyResponse::HTTP_UNPROCESSABLE_ENTITY
             : SymfonyResponse::HTTP_OK;
     }
