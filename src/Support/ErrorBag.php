@@ -32,8 +32,9 @@ trait ErrorBag
     {
         $errorMap = [
             SymfonyResponse::HTTP_UNPROCESSABLE_ENTITY => 'google2fa.error_messages.wrong_otp',
-            SymfonyResponse::HTTP_BAD_REQUEST => 'google2fa.error_messages.cannot_be_empty'
+            SymfonyResponse::HTTP_BAD_REQUEST          => 'google2fa.error_messages.cannot_be_empty',
         ];
+
         return $this->createErrorBagForMessage(
             trans(
                 config(

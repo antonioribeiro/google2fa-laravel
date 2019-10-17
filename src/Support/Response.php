@@ -38,6 +38,7 @@ trait Response
         if ($this->checkOTP() === Constants::OTP_EMPTY) {
             return SymfonyResponse::HTTP_BAD_REQUEST;
         }
+
         return SymfonyResponse::HTTP_UNPROCESSABLE_ENTITY;
     }
 

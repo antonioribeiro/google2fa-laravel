@@ -270,7 +270,7 @@ class Google2FaLaravelTest extends TestCase
     public function testViewError()
     {
         config([
-            'google2fa.error_messages.cannot_be_empty' => self::EMPTY_OTP_ERROR_MESSAGE
+            'google2fa.error_messages.cannot_be_empty' => self::EMPTY_OTP_ERROR_MESSAGE,
         ]);
 
         $this->assertStringContainsString(
