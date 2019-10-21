@@ -86,6 +86,7 @@ class Authenticator extends Google2FA
     protected function getOneTimePassword()
     {
         $password = $this->getInputOneTimePassword();
+
         if (is_null($password) || empty($password)) {
             event(new EmptyOneTimePasswordReceived());
 
