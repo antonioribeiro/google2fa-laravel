@@ -17,4 +17,10 @@ class Constants
     const QRCODE_IMAGE_BACKEND_SVG = 'svg';
 
     const QRCODE_IMAGE_BACKEND_IMAGEMAGICK = 'imagemagick';
+
+    const OTP_EMPTY = 'empty';
+
+    const OTP_VALID = 'valid';
+
+    const OTP_INVALID = 'invalid';
 }

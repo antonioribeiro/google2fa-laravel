@@ -85,7 +85,8 @@ class Authenticator extends Google2FA
      */
     protected function getOneTimePassword()
     {
-        if (is_null($password = $this->getInputOneTimePassword()) || empty($password)) {
+        $password = $this->getInputOneTimePassword();
+        if (is_null($password) || empty($password)) {
             event(new EmptyOneTimePasswordReceived());
 
             if ($this->config('throw_exceptions', true)) {
@@ -103,7 +104,7 @@ class Authenticator extends Google2FA
      */
     public function isAuthenticated()
     {
-        return $this->canPassWithoutCheckingOTP() || $this->checkOTP();
+        return $this->canPassWithoutCheckingOTP() || ($this->checkOTP() === Constants::OTP_VALID);
     }
 
     /**
@@ -121,21 +122,27 @@ class Authenticator extends Google2FA
     }
 
     /**
-     * Check if the input OTP is valid.
+     * Check if the input OTP is valid. Returns one of the possible OTP_STATUS codes:
+     * 'empty', 'valid' or 'invalid'.
      *
-     * @return bool
+     * @return string
      */
     protected function checkOTP()
     {
-        if (!$this->inputHasOneTimePassword()) {
-            return false;
+        if (!$this->inputHasOneTimePassword() || empty($this->getInputOneTimePassword())) {
+            return Constants::OTP_EMPTY;
         }
 
-        if ($isValid = $this->verifyOneTimePassword()) {
+        $isValid = $this->verifyOneTimePassword();
+
+        if ($isValid) {
             $this->login();
+            $this->fireLoginEvent($isValid);
+
+            return Constants::OTP_VALID;
         }
 
-        return $this->fireLoginEvent($isValid);
+        return Constants::OTP_INVALID;
     }
 
     /**
