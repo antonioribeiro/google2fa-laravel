@@ -12,14 +12,15 @@ use PragmaRX\Google2FALaravel\Tests\Support\User;
 
 class Google2FaLaravelTest extends TestCase
 {
-    const VIEW_ERROR_MESSAGE = 'WRONG OTP';
+    const WRONG_OTP_ERROR_MESSAGE = 'WRONG OTP';
+    const EMPTY_OTP_ERROR_MESSAGE = 'EMPTY OTP';
 
     /**
      * @return \Illuminate\Http\Request
      */
     private function createEmptyRequest()
     {
-        return $request = (new Request())->createFromBase(
+        return (new Request())->createFromBase(
             \Symfony\Component\HttpFoundation\Request::create(
                 '/',
                 'GET'
@@ -39,7 +40,9 @@ class Google2FaLaravelTest extends TestCase
     {
         parent::setup();
 
-        $this->app->make('Illuminate\Contracts\Http\Kernel')->pushMiddleware('Illuminate\Session\Middleware\StartSession');
+        $this->app->make('Illuminate\Contracts\Http\Kernel')
+            ->pushMiddleware('Illuminate\Session\Middleware\StartSession')
+            ->pushMiddleware('Illuminate\View\Middleware\ShareErrorsFromSession::class');
 
         \View::addLocation(__DIR__.'/views');
 
@@ -72,7 +75,7 @@ class Google2FaLaravelTest extends TestCase
 
     protected function assertLogin($password = null, $message = 'google2fa passed')
     {
-        config(['google2fa.error_messages.wrong_otp' => self::VIEW_ERROR_MESSAGE]);
+        config(['google2fa.error_messages.wrong_otp' => self::WRONG_OTP_ERROR_MESSAGE]);
 
         $renderedView = $this->call('POST', 'login', ['one_time_password' => $password])->getContent();
 
@@ -81,9 +84,9 @@ class Google2FaLaravelTest extends TestCase
             $renderedView
         );
 
-        if ($message !== self::VIEW_ERROR_MESSAGE) {
+        if ($message !== self::WRONG_OTP_ERROR_MESSAGE) {
             $this->assertStringNotContainsString(
-                self::VIEW_ERROR_MESSAGE,
+                self::WRONG_OTP_ERROR_MESSAGE,
                 $renderedView
             );
         }
@@ -148,7 +151,7 @@ class Google2FaLaravelTest extends TestCase
 
     public function testWrongOTP()
     {
-        $this->assertLogin('9999999', self::VIEW_ERROR_MESSAGE);
+        $this->assertLogin('9999999', self::WRONG_OTP_ERROR_MESSAGE);
     }
 
     public function testLogout()
@@ -266,10 +269,12 @@ class Google2FaLaravelTest extends TestCase
 
     public function testViewError()
     {
-        config(['google2fa.error_messages.wrong_otp' => self::VIEW_ERROR_MESSAGE]);
+        config([
+            'google2fa.error_messages.cannot_be_empty' => self::EMPTY_OTP_ERROR_MESSAGE,
+        ]);
 
         $this->assertStringContainsString(
-            self::VIEW_ERROR_MESSAGE,
+            self::EMPTY_OTP_ERROR_MESSAGE,
             $this->call('POST', 'login', ['input_one_time_password_missing' => 'missing'])->getContent()
         );
     }
