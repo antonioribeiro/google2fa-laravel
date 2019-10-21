@@ -261,7 +261,7 @@ class Google2FA extends Google2FAService
                 $one_time_password,
                 $this->config('window'),
                 null, // $timestamp
-                $this->getOldTimestamp() ?: Google2FAConstants::ARGUMENT_NOT_SET
+                $this->getOldTimestamp() ?: null
         );
     }
 
