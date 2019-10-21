@@ -4,7 +4,6 @@ namespace PragmaRX\Google2FALaravel;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request as IlluminateRequest;
-use PragmaRX\Google2FA\Support\Constants as Google2FAConstants;
 use PragmaRX\Google2FALaravel\Events\LoggedOut;
 use PragmaRX\Google2FALaravel\Events\OneTimePasswordExpired;
 use PragmaRX\Google2FALaravel\Exceptions\InvalidSecretKey;
