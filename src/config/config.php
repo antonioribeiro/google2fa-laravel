@@ -15,6 +15,20 @@ return [
     'lifetime' => 0, // 0 = eternal
 
     /*
+     * Make persistent by using a database column.
+     *
+     * In case you need the lifetime to be greater than the lifespan of your current session. (ex: used for remember_me)
+     */
+    'remember' => true,
+
+    /*
+     *User's table column to use for persistent 2FA.
+     *
+     * Column type should be timestamp.
+     */
+    'remember_column' => 'google2fa_remember',
+
+    /*
      * Renew lifetime at every new request.
      */
     'keep_alive' => true,
