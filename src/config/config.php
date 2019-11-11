@@ -5,19 +5,19 @@ return [
     /*
      * Enable / disable Google2FA.
      */
-    'enabled' => true,
+    'enabled' => env('OTP_ENABLED', true),
 
     /*
      * Lifetime in minutes.
      *
      * In case you need your users to be asked for a new one time passwords from time to time.
      */
-    'lifetime' => 0, // 0 = eternal
+    'lifetime' => env('OTP_LIFETIME', 0), // 0 = eternal
 
     /*
      * Renew lifetime at every new request.
      */
-    'keep_alive' => true,
+    'keep_alive' => env('OTP_KEEP_ALIVE', true),
 
     /*
      * Auth container binding.
@@ -67,7 +67,7 @@ return [
     /*
      * Throw exceptions or just fire events?
      */
-    'throw_exceptions' => true,
+    'throw_exceptions' => env('OTP_THROW_EXCEPTION', true),
 
     /*
      * Which image backend to use for generating QR codes?
