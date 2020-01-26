@@ -16,8 +16,10 @@ use PragmaRX\Google2FAQRCode\Google2FA as Google2FAService;
 
 class Google2FA extends Google2FAService
 {
-    use Auth, Config, Request, Session;
-
+    use Auth;
+    use Config;
+    use Request;
+    use Session;
     protected $qrCodeBackend;
 
     /**
