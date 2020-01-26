@@ -11,8 +11,10 @@ use PragmaRX\Google2FALaravel\Google2FA;
 
 class Authenticator extends Google2FA
 {
-    use ErrorBag, Input, Response, Session;
-
+    use ErrorBag;
+    use Input;
+    use Response;
+    use Session;
     /**
      * The current password.
      *
