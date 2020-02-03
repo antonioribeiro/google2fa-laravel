@@ -47,7 +47,7 @@ Before Google2FA 2.0 (Laravel 5.1) you have to install `pragmarx/google2fa:~1.0`
 
 ## Demo
 
-Click [here](https://pragmarx.com/google2fa/middleware) to see the middleware demo:
+Click [here](https://pragmarx.com/playground/google2fa/middleware) to see the middleware demo:
 
 ![middleware](docs/middleware.jpg)
 
