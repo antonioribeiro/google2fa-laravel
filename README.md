@@ -126,7 +126,7 @@ Route::get('/admin', function () {
 
 There are three available: **imagemagick** (default), **svg** and **eps**. 
 
-You can hange it via config:
+You can change it via config:
 
 ``` php
 /*
