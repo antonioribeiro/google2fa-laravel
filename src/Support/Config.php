@@ -13,7 +13,7 @@ trait Config
      *
      * @return mixed
      */
-    protected function config($string, $default = null)
+    public function config($string, $default = null)
     {
         if (is_null(config($config = Constants::CONFIG_PACKAGE_NAME))) {
             throw new \Exception("Config ({$config}.php) not found. Have you published it?");
