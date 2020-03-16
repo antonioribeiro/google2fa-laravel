@@ -145,6 +145,8 @@ class Authenticator extends Google2FA
             return Constants::OTP_VALID;
         }
 
+        $this->fireLoginEvent($isValid);
+
         return Constants::OTP_INVALID;
     }
 
