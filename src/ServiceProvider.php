@@ -22,7 +22,8 @@ class ServiceProvider extends IlluminateServiceProvider
     private function mergeConfig()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/config/config.php', 'google2fa'
+            __DIR__.'/config/config.php',
+            'google2fa'
         );
     }
 

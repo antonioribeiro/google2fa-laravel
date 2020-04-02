@@ -259,10 +259,10 @@ class Google2FA extends Google2FAService
     public function verifyGoogle2FA($secret, $one_time_password)
     {
         return $this->verifyKey(
-                $secret,
-                $one_time_password,
-                $this->config('window'),
-                null, // $timestamp
+            $secret,
+            $one_time_password,
+            $this->config('window'),
+            null, // $timestamp
                 $this->getOldTimestamp() ?: null
         );
     }
