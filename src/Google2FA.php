@@ -245,7 +245,7 @@ class Google2FA extends Google2FAService
      */
     protected function updateCurrentAuthTime()
     {
-        $this->sessionPut(Constants::SESSION_AUTH_TIME, Carbon::now());
+        $this->sessionPut(Constants::SESSION_AUTH_TIME, Carbon::now()->toIso8601String());
     }
 
     /**
