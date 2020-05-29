@@ -182,6 +182,7 @@ Usually an OTP lasts forever, until the user logs off your app, but, to improve 
 
 'lifetime' => 0, // 0 = eternal
 ```
+Keep in mind that this uses the Laravel sessions in the background. If this number exceeds the value set in ``config('session.lifetime')`` you will still be logged out, even if your OTP lifetime has not expired.
 
 And you can decide whether your OTP will be kept alive while your users are browsing the site or not:
 
