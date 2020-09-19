@@ -276,7 +276,7 @@ class Google2FA extends Google2FAService
      */
     protected function verifyAndStoreOneTimePassword($one_time_password)
     {
-        return $this->storeOldTimeStamp(
+        return $this->storeOldTimestamp(
             $this->verifyGoogle2FA(
                 $this->getGoogle2FASecretKey(),
                 $one_time_password
