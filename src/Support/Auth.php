@@ -21,8 +21,7 @@ trait Auth
         if (is_null($this->auth)) {
             $this->auth = app($this->config('auth'));
 
-            if(!empty($this->config('guard')))
-            {
+            if (!empty($this->config('guard'))) {
                 $this->auth = app($this->config('auth'))->guard($this->config('guard'));
             }
         }
