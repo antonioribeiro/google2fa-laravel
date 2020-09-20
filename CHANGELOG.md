@@ -1,5 +1,9 @@
 ## Change Log
 
+## [1.4.0] - 2019-09-20
+### Added
+- Laravel 8 support
+
 ## [1.1.2] - 2019-03-13
 ### Added
 - New config item for empty OTP error messages: 'cannot_be_empty' => 'One Time Password cannot be empty.',  
