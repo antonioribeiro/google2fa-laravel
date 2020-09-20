@@ -1,5 +1,9 @@
 ## Change Log
 
+## [1.4.1] - 2019-09-20
+### Added
+- Supports using a different guard
+
 ## [1.4.0] - 2019-09-20
 ### Added
 - Laravel 8 support
