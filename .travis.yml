@@ -4,28 +4,42 @@ php:
   - 7.1
   - 7.2
   - 7.3
-  - 7.4snapshot
+  - 7.4
 # - nightly
-
-# This triggers builds to run on the new TravisCI infrastructure.
-# See: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
-sudo: false
 
 ## Cache composer
 cache:
   directories:
     - $HOME/.composer/cache
 
+env:
+  - LARAVEL_VERSION=5.8.* TESTBENCH_VERSION=3.8.*
+  - LARAVEL_VERSION=6.* TESTBENCH_VERSION=4.*
+  - LARAVEL_VERSION=7.* TESTBENCH_VERSION=5.*
+  - LARAVEL_VERSION=8.* TESTBENCH_VERSION=6.*
+
+matrix:
+  exclude:
+    - php: 7.1
+      env: LARAVEL_VERSION=6.* TESTBENCH_VERSION=4.*
+    - php: 7.1
+      env: LARAVEL_VERSION=7.* TESTBENCH_VERSION=5.*
+    - php: 7.1
+      env: LARAVEL_VERSION=8.* TESTBENCH_VERSION=6.*
+    - php: 7.2
+      env: LARAVEL_VERSION=8.* TESTBENCH_VERSION=6.*
+
 before_script:
   - yes '' | pecl install imagick
-  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-dist
+  - composer require "laravel/framework:${LARAVEL_VERSION}" "orchestra/testbench:${TESTBENCH_VERSION}" --no-update
+  - travis_retry composer update --no-interaction --prefer-dist
 
 script:
   - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
 
 after_script:
   - |
-    if [[ "$TRAVIS_PHP_VERSION" == '7.3' ]]; then
+    if [[ "$TRAVIS_PHP_VERSION" == '7.4' ]]; then
       wget https://scrutinizer-ci.com/ocular.phar
       php ocular.phar code-coverage:upload --format=php-clover coverage.clover
     fi

@@ -60,11 +60,12 @@ class User extends Authenticatable
     /**
      * Retrieve the model for a bound value.
      *
-     * @param mixed $value
+     * @param mixed       $value
+     * @param string|null $field
      *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function resolveRouteBinding($value)
+    public function resolveRouteBinding($value, $field = null)
     {
         // TODO: Implement resolveRouteBinding() method.
     }
