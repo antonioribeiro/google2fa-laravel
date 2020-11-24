@@ -32,7 +32,6 @@ return [
     /*
      * 2FA verified session var.
      */
-
     'session_var' => 'google2fa',
 
     /*
