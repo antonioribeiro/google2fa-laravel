@@ -25,7 +25,7 @@ class Google2FA extends Google2FAService
     /**
      * Construct the correct backend.
      */
-    protected function constructBackend(): void
+    protected function constructBackend()
     {
         switch ($this->getQRCodeBackend()) {
             case Constants::QRCODE_IMAGE_BACKEND_SVG:
