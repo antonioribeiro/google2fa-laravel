@@ -79,7 +79,7 @@ class Google2FA extends Google2FAService
     public function boot($request)
     {
         $this->setRequest($request);
-        
+
         $this->setWindow($this->config('window'));
 
         return $this;
