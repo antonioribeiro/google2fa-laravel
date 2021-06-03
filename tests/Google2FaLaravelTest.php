@@ -251,7 +251,7 @@ class Google2FaLaravelTest extends TestCase
         $qrCode = Google2FA::getQRCodeInline('company name', 'email@company.com', Constants::SECRET);
 
         $this->assertStringStartsWith(
-            'data:image/png;base64',
+            '<?xml version="1.0"',
             $qrCode
         );
 
