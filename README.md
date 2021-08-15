@@ -119,7 +119,11 @@ Route::get('/admin', function () {
 })->middleware(['auth', '2fa']);
 ```
 
-### QRCode Backend
+### QRCode
+
+This package uses the [Google2FA-QRCode package](https://github.com/antonioribeiro/google2fa-qrcode), please check it for more info on how to configure the proper QRCode generators for your use case.
+
+### Imagick QRCode Backend
 
 There are three available: **imagemagick** (default), **svg** and **eps**. 
 
