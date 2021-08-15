@@ -29,11 +29,11 @@ class Google2FA extends Google2FAService
     {
         switch ($this->getQRCodeBackend()) {
             case Constants::QRCODE_IMAGE_BACKEND_SVG:
-                parent::__construct(new \BaconQrCode\Renderer\Image\SvgImageBackEnd());
+                parent::__construct(null, new \BaconQrCode\Renderer\Image\SvgImageBackEnd());
                 break;
 
             case Constants::QRCODE_IMAGE_BACKEND_EPS:
-                parent::__construct(new \BaconQrCode\Renderer\Image\EpsImageBackEnd());
+                parent::__construct(null, new \BaconQrCode\Renderer\Image\EpsImageBackEnd());
                 break;
 
             case Constants::QRCODE_IMAGE_BACKEND_IMAGEMAGICK:
