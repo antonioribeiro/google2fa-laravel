@@ -23,23 +23,24 @@ class Google2FA extends Google2FAService
     protected $qrCodeBackend;
 
     /**
-     * Construct the correct backend.
+     * Get current image correct backend.
      */
-    protected function constructBackend()
+    protected function getImageBackend()
     {
+        if (!class_exists('BaconQrCode\Renderer\ImageRenderer')) {
+            return null;
+        }
+
         switch ($this->getQRCodeBackend()) {
             case Constants::QRCODE_IMAGE_BACKEND_SVG:
-                parent::__construct(null, new \BaconQrCode\Renderer\Image\SvgImageBackEnd());
-                break;
+                return new \BaconQrCode\Renderer\Image\SvgImageBackEnd();
 
             case Constants::QRCODE_IMAGE_BACKEND_EPS:
-                parent::__construct(null, new \BaconQrCode\Renderer\Image\EpsImageBackEnd());
-                break;
+                return new \BaconQrCode\Renderer\Image\EpsImageBackEnd();
 
             case Constants::QRCODE_IMAGE_BACKEND_IMAGEMAGICK:
             default:
-                parent::__construct();
-                break;
+                return null;
         }
     }
 
@@ -66,7 +67,7 @@ class Google2FA extends Google2FAService
     {
         $this->boot($request);
 
-        $this->constructBackend();
+        parent::__construct(null, $this->getImageBackend());
     }
 
     /**
