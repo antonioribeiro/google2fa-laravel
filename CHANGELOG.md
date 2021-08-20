@@ -1,10 +1,21 @@
 ## Change Log
 
-## [1.4.1] - 2019-09-20
+## [2.0.1] - 2021-08-15
 ### Added
-- Supports using a different guard
+- Make image backend optional if bacon is not installed
 
-## [1.4.0] - 2019-09-20
+## [2.0.0] - 2021-08-15
+### Added
+- Allow Google2FA QRCode 3.0
+
+## [1.4.1] - 2020-09-20
+### Added
+- Improve PHP 8 compatibility by not defaulting to imagemagick
+- Make the code PHP 7.0 compatible
+- Supports using a different guard
+- Ability to setWindow dynamically
+
+## [1.4.0] - 2020-09-20
 ### Added
 - Laravel 8 support
 
