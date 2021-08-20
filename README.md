@@ -10,7 +10,7 @@
     <a href="https://packagist.org/packages/pragmarx/google2fa-laravel"><img alt="Downloads" src="https://img.shields.io/packagist/dt/pragmarx/google2fa-laravel.svg?style=flat-square"></a>
     <a href="https://scrutinizer-ci.com/g/antonioribeiro/google2fa-laravel/?branch=master"><img alt="Coverage" src="https://img.shields.io/scrutinizer/coverage/g/antonioribeiro/google2fa-laravel.svg?style=flat-square"></a>
     <a href="https://styleci.io/repos/94630851"><img alt="StyleCI" src="https://styleci.io/repos/94630851/shield"></a>
-    <a href="https://travis-ci.org/antonioribeiro/google2fa-laravel"><img alt="PHP" src="https://img.shields.io/badge/PHP-7.0%20--%207.3-brightgreen.svg?style=flat-square"></a>
+    <a href="https://travis-ci.org/antonioribeiro/google2fa-laravel"><img alt="PHP" src="https://img.shields.io/badge/PHP-7.0%20--%208.0-brightgreen.svg?style=flat-square"></a>
 </p>
 
 ### Google Two-Factor Authentication Package for Laravel
@@ -41,7 +41,7 @@ You can scan the QR code on [this (old) demo page](https://antoniocarlosribeiro.
 |---------|-----------|-------------------|
 | 4.2     | <= 1.0.1  |                   |
 | 5.0-5.1 | <= 1.0.1  |                   |
-| 5.2-6.x | >= 2.0.0  | >= 0.2.0          |
+| 5.2-8.x | >= 2.0.0  | >= 0.2.0          |
 
 Before Google2FA 2.0 (Laravel 5.1) you have to install `pragmarx/google2fa:~1.0`, because this package was both a Laravel package and a PHP (agnostic).   
 
