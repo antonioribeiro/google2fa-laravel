@@ -38,7 +38,8 @@ trait ErrorBag
         return $this->createErrorBagForMessage(
             trans(
                 config(
-                    array_key_exists($statusCode, $errorMap) ? $errorMap[$statusCode] : 'google2fa.error_messages.unknown'
+                    array_key_exists($statusCode, $errorMap) ? $errorMap[$statusCode] : 'google2fa.error_messages.unknown',
+                    'google2fa.error_messages.unknown'
                 )
             )
         );
