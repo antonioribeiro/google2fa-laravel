@@ -3,8 +3,8 @@
 namespace PragmaRX\Google2FALaravel\Listeners;
 
 use Illuminate\Auth\Events\Login;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Auth\Authenticatable as User;
+use Illuminate\Support\Facades\Auth;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 
 class LoginViaRemember
@@ -12,7 +12,8 @@ class LoginViaRemember
     /**
      * Handle the event.
      *
-     * @param  \Illuminate\Auth\Events\Login  $event
+     * @param \Illuminate\Auth\Events\Login $event
+     *
      * @return void
      */
     public function handle(Login $event)
@@ -25,7 +26,7 @@ class LoginViaRemember
     /**
      * Force register Google2fa login.
      *
-     * @param  User  $user
+     * @param User $user
      */
     private function registerGoogle2fa(User $user)
     {
