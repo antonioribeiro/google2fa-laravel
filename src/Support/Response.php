@@ -2,8 +2,11 @@
 
 namespace PragmaRX\Google2FALaravel\Support;
 
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\JsonResponse as IlluminateJsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response as IlluminateHtmlResponse;
+use Illuminate\Routing\Redirector;
 use PragmaRX\Google2FALaravel\Events\OneTimePasswordRequested;
 use PragmaRX\Google2FALaravel\Events\OneTimePasswordRequested53;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
@@ -64,7 +67,7 @@ trait Response
     /**
      * Create a response to request the OTP.
      *
-     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
+     * @return Application|IlluminateJsonResponse|RedirectResponse|IlluminateHtmlResponse|Redirector
      */
     public function makeRequestOneTimePasswordResponse()
     {
@@ -74,13 +77,17 @@ trait Response
                 : new OneTimePasswordRequested($this->getUser())
         );
 
-        $expectJson = app()->version() < '5.4'
-            ? $this->getRequest()->wantsJson()
-            : $this->getRequest()->expectsJson();
+        if ($this->config('validation_method') == "route") {
+            return redirect($this->config('route'));
+        } else {
+            $expectJson = app()->version() < '5.4'
+                ? $this->getRequest()->wantsJson()
+                : $this->getRequest()->expectsJson();
 
-        return $expectJson
-            ? $this->makeJsonResponse($this->makeStatusCode())
-            : $this->makeHtmlResponse($this->makeStatusCode());
+            return $expectJson
+                ? $this->makeJsonResponse($this->makeStatusCode())
+                : $this->makeHtmlResponse($this->makeStatusCode());
+        }
     }
 
     /**
