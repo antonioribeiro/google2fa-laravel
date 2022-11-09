@@ -55,17 +55,27 @@ return [
     'otp_secret_column' => 'google2fa_secret',
 
     /*
+     * Redirect to route or render view if validation needed
+     */
+    'validation_method' => 'route',
+
+    /*
      * One Time Password View.
      */
     'view' => 'google2fa.index',
 
     /*
+     * Validation route.
+     */
+    'route' => '/2fa',
+
+    /*
      * One Time Password error message.
      */
     'error_messages' => [
-        'wrong_otp'       => "The 'One Time Password' typed was wrong.",
+        'wrong_otp' => "The 'One Time Password' typed was wrong.",
         'cannot_be_empty' => 'One Time Password cannot be empty.',
-        'unknown'         => 'An unknown error has occurred. Please try again.',
+        'unknown' => 'An unknown error has occurred. Please try again.',
     ],
 
     /*
