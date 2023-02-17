@@ -200,7 +200,7 @@ And you can decide whether your OTP will be kept alive while your users are brow
 
 ## Manually logging out from 2Fa
 
-This command wil logout your user and redirect he/she to the 2FA form on the next request:
+This command will logout your user and redirect he/she to the 2FA form on the next request:
 
 ``` php
 Google2FA::logout();
