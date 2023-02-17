@@ -41,7 +41,7 @@ You can scan the QR code on [this (old) demo page](https://antoniocarlosribeiro.
 |---------|-----------|-------------------|
 | 4.2     | <= 1.0.1  |                   |
 | 5.0-5.1 | <= 1.0.1  |                   |
-| 5.2-8.x | >= 2.0.0  | >= 0.2.0          |
+| 5.2-10.x | >= 2.0.0  | >= 0.2.0          |
 
 Before Google2FA 2.0 (Laravel 5.1) you have to install `pragmarx/google2fa:~1.0`, because this package was both a Laravel package and a PHP (agnostic).   
 

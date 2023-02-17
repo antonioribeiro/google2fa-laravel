@@ -184,7 +184,7 @@ class Google2FaLaravelTest extends TestCase
         $this->startSession();
 
         $request = $this->createEmptyRequest();
-        $request->setLaravelSession($this->app['session']);
+        $request->setLaravelSession($this->app['session.store']);
 
         $authenticator = app(\PragmaRX\Google2FALaravel\Google2FA::class)->boot($request);
 
