@@ -60,6 +60,11 @@ return [
     'view' => 'google2fa.index',
 
     /*
+     * Set a custom OTP response using a callable.
+     */
+    'custom_response' => null,
+
+    /*
      * One Time Password error message.
      */
     'error_messages' => [

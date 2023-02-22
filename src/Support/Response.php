@@ -74,6 +74,10 @@ trait Response
                 : new OneTimePasswordRequested($this->getUser())
         );
 
+        if ($this->config('custom_response')) {
+            return call_user_func_array($this->config('custom_response'), [$this->getUser()]);
+        }
+
         $expectJson = app()->version() < '5.4'
             ? $this->getRequest()->wantsJson()
             : $this->getRequest()->expectsJson();
