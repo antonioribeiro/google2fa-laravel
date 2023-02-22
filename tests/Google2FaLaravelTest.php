@@ -5,6 +5,7 @@ namespace PragmaRX\Google2FALaravel\Tests;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use PragmaRX\Google2FALaravel\Support\Authenticator;
 use PragmaRX\Google2FALaravel\Support\Constants as PackageConstants;
@@ -44,7 +45,7 @@ class Google2FaLaravelTest extends TestCase
             ->pushMiddleware('Illuminate\Session\Middleware\StartSession')
             ->pushMiddleware('Illuminate\View\Middleware\ShareErrorsFromSession::class');
 
-        \View::addLocation(__DIR__.'/views');
+        View::addLocation(__DIR__.'/views');
 
         $this->loginUser();
     }
