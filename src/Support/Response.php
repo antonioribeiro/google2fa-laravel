@@ -90,6 +90,10 @@ trait Response
      */
     private function getView()
     {
+        if ($this->config('type_view') === 'inertia') {
+            return \Inertia\Inertia::render($this->config('view'))->toResponse($this->getRequest())->throwResponse();
+        }
+
         return view($this->config('view'));
     }
 
