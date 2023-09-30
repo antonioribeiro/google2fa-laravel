@@ -55,6 +55,11 @@ return [
     'otp_secret_column' => 'google2fa_secret',
 
     /*
+     * Type of user view, blade or inertia
+     */
+    'type_view' => 'blade',
+
+    /*
      * One Time Password View.
      */
     'view' => 'google2fa.index',
