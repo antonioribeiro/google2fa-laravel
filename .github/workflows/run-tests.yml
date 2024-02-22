@@ -1,0 +1,69 @@
+name: Tests
+
+on:
+  push:
+    paths:
+      - '.github/workflows/run-tests.yml'
+      - 'composer.json'
+      - 'phpunit.xml'
+      - 'src/**'
+      - 'tests/**'
+  pull_request:
+    paths:
+      - '.github/workflows/run-tests.yml'
+      - 'composer.json'
+      - 'phpunit.xml'
+      - 'src/**'
+      - 'tests/**'
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  php-tests:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    env:
+      COMPOSER_NO_INTERACTION: 1
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [
+          8.3,
+          8.2,
+          8.1,
+          8.0,
+          7.4,
+          7.3,
+          7.2,
+        ]
+
+    name: P${{ matrix.php }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          extensions: pdo_sqlite, fileinfo
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer update --prefer-dist
+
+      - name: phpunit
+        run: vendor/bin/phpunit
