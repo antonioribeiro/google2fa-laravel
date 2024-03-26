@@ -243,6 +243,24 @@ protected $routeMiddleware = [
 ];
 ```
 
+## 2FA and Laravel login via remember 
+
+When Laravel login via remember is activated, the session is renovated and the 2FA code is required again. To solve this, add the ``LoginViaRemember`` listener in your ``App\Providers\EventServiceProvider``:
+
+``` php
+use Illuminate\Auth\Events\Login;
+use PragmaRX\Google2FALaravel\Listeners\LoginViaRemember;
+
+class EventServiceProvider extends ServiceProvider
+{
+    protected $listen = [
+        Login::class => [
+            LoginViaRemember::class,
+        ],
+    ];
+...
+```
+
 ## Events
 
 The following events are fired:
