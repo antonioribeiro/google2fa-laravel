@@ -165,7 +165,8 @@ class Google2FA extends Google2FAService
     protected function minutesSinceLastActivity()
     {
         return Carbon::now()->diffInMinutes(
-            $this->sessionGet(Constants::SESSION_AUTH_TIME)
+            $this->sessionGet(Constants::SESSION_AUTH_TIME),
+            true
         );
     }
 
@@ -266,7 +267,7 @@ class Google2FA extends Google2FAService
             $one_time_password,
             $this->getWindow(),
             null, // $timestamp
-                $this->getOldTimestamp() ?: null
+            $this->getOldTimestamp() ?: null
         );
     }
 
