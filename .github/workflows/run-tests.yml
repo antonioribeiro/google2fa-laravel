@@ -38,8 +38,18 @@ jobs:
           7.3,
           7.2,
         ]
+        laravel: [
+          ^12,
+          ^11,
+          ^10,
+          ^9,
+          ^8,
+          ^7,
+          ^6,
+          ^5.4.36,
+        ]
 
-    name: P${{ matrix.php }}
+    name: P${{ matrix.php }} L${{ matrix.laravel }}
 
     steps:
       - name: Checkout code
@@ -51,6 +61,8 @@ jobs:
           php-version: ${{ matrix.php }}
           coverage: none
           extensions: pdo_sqlite, fileinfo
+
+      - run: composer require laravel/framework:${{ matrix.laravel }} --no-update
 
       - name: Get composer cache directory
         id: composer-cache
