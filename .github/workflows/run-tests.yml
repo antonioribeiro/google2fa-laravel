@@ -76,7 +76,7 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install dependencies
-        run: composer update --prefer-dist
+        run: composer update --prefer-dist --no-plugins
 
       - name: phpunit
         run: vendor/bin/phpunit
