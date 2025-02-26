@@ -208,7 +208,10 @@ class Google2FA extends Google2FAService
     protected function twoFactorAuthStillValid()
     {
         return
-            (bool) $this->sessionGet(Constants::SESSION_AUTH_PASSED, false) &&
+            (
+                (bool) $this->sessionGet(Constants::SESSION_AUTH_PASSED, false) ||
+                ( $this->config('remember') && $this->getUser()->{$this->config('remember_column')} && ( Carbon::now() <= (new Carbon($this->getUser()->{$this->config('remember_column')}))->addMinutes($this->config('lifetime')) ) )
+            ) &&
             !$this->passwordExpired();
     }
 
@@ -229,6 +232,12 @@ class Google2FA extends Google2FAService
     {
         $this->sessionPut(Constants::SESSION_AUTH_PASSED, true);
 
+        if (isset(\Cookie::get()[\Auth::getRecallerName()])) {
+            $user = $this->getUser();
+            $user->{$this->config('remember_column')} = Carbon::now();
+            $user->save();
+        }
+
         $this->updateCurrentAuthTime();
     }
 
@@ -238,6 +247,8 @@ class Google2FA extends Google2FAService
     public function logout()
     {
         $user = $this->getUser();
+        $user->{$this->config('remember_column')} = null;
+        $user->save();
 
         $this->sessionForget();
 
