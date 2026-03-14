@@ -25,8 +25,9 @@ class MiddlewareStateless
     /**
      * Attach any queued cookies to the response.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request                   $request
      * @param \Symfony\Component\HttpFoundation\Response $response
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function attachQueuedCookies($request, $response)

@@ -30,6 +30,7 @@ trait Cookie
      * Create an encrypted 2FA remember cookie payload.
      *
      * @param string $timestamp
+     *
      * @return string
      */
     protected function create2FACookiePayload($timestamp)
@@ -40,7 +41,7 @@ trait Cookie
         $payload = json_encode([
             'timestamp' => $timestamp,
             'device_id' => $this->getDeviceFingerprint(),
-            'token' => $token,
+            'token'     => $token,
         ]);
 
         return encrypt($payload);
@@ -95,6 +96,7 @@ trait Cookie
      * Set the 2FA remember cookie.
      *
      * @param string $timestamp
+     *
      * @return void
      */
     protected function set2FARememberCookie($timestamp)
@@ -176,6 +178,7 @@ trait Cookie
      * Check if the 2FA cookie is still valid based on lifetime.
      *
      * @param array $payload
+     *
      * @return bool
      */
     protected function is2FACookieValid(array $payload)
