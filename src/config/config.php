@@ -50,6 +50,16 @@ return [
     'forbid_old_passwords' => false,
 
     /*
+     * Remember 2FA for a longer period using a device-specific cookie.
+     *
+     * When enabled, 2FA verification will be stored in a cookie that can
+     * outlive the session. The cookie is tied to the current session via
+     * a token, ensuring it expires when the session expires or the user
+     * re-authenticates.
+     */
+    'remember_2fa' => env('OTP_REMEMBER_2FA', false),
+
+    /*
      * User's table column for google2fa secret.
      */
     'otp_secret_column' => 'google2fa_secret',

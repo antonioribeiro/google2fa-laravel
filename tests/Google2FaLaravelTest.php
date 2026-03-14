@@ -96,6 +96,7 @@ class Google2FaLaravelTest extends TestCase
     protected function getEnvironmentSetUp($app)
     {
         config(['app.debug' => true]);
+        config(['app.key' => 'base64:'.base64_encode(str_repeat('a', 32))]);
 
         $app['router']->get('home', ['as' => 'home', 'uses' => function () {
             return 'we are home';
@@ -293,5 +294,119 @@ class Google2FaLaravelTest extends TestCase
             PackageConstants::QRCODE_IMAGE_BACKEND_IMAGEMAGICK,
             Google2FA::getQRCodeBackend()
         );
+    }
+
+    public function testRemember2FADisabledByDefault()
+    {
+        config(['google2fa.remember_2fa' => false]);
+
+        $request = $this->createEmptyRequest();
+        $request->setLaravelSession($this->app['session.store']);
+
+        $authenticator = app(\PragmaRX\Google2FALaravel\Google2FA::class)->boot($request);
+        $authenticator->login();
+
+        // Cookie should not be queued
+        $this->assertNull($request->attributes->get('google2fa_cookie'));
+    }
+
+    public function testRemember2FACookieIsSet()
+    {
+        config(['google2fa.remember_2fa' => true]);
+
+        $request = $this->createEmptyRequest();
+        $request->setLaravelSession($this->app['session.store']);
+
+        $authenticator = app(\PragmaRX\Google2FALaravel\Google2FA::class)->boot($request);
+        $authenticator->login();
+
+        // Cookie should be queued
+        $cookie = $request->attributes->get('google2fa_cookie');
+        $this->assertNotNull($cookie);
+        $this->assertEquals('google2fa_remember', $cookie->getName());
+    }
+
+    public function testRemember2FACookieClearedOnLogout()
+    {
+        config(['google2fa.remember_2fa' => true]);
+
+        $request = $this->createEmptyRequest();
+        $request->setLaravelSession($this->app['session.store']);
+
+        $authenticator = app(\PragmaRX\Google2FALaravel\Google2FA::class)->boot($request);
+        $authenticator->login();
+
+        // Cookie should be set
+        $cookie = $request->attributes->get('google2fa_cookie');
+        $this->assertNotNull($cookie);
+
+        // Logout
+        $authenticator->logout();
+
+        // Cookie should now be a deletion cookie (expires time <= 0)
+        $cookie = $request->attributes->get('google2fa_cookie');
+        $this->assertNotNull($cookie);
+        $this->assertLessThanOrEqual(0, $cookie->getExpiresTime());
+    }
+
+    public function testRemember2FACookieRequiresValidDevice()
+    {
+        config(['google2fa.remember_2fa' => true]);
+
+        $request1 = $this->createEmptyRequest();
+        $request1->setLaravelSession($this->app['session.store']);
+
+        $authenticator1 = app(\PragmaRX\Google2FALaravel\Google2FA::class)->boot($request1);
+        $authenticator1->login();
+
+        $cookie1 = $request1->attributes->get('google2fa_cookie');
+        $this->assertNotNull($cookie1);
+
+        // Simulate a different device (different user agent)
+        $request2 = $this->createEmptyRequest();
+        $request2->headers->set('User-Agent', 'Different Device');
+        $request2->setLaravelSession($this->app['session.store']);
+        $request2->cookies->set('google2fa_remember', $cookie1->getValue());
+
+        $authenticator2 = app(\PragmaRX\Google2FALaravel\Google2FA::class)->boot($request2);
+
+        // Cookie should be invalid due to different device
+        $this->assertNull($authenticator2->getValid2FACookie());
+    }
+
+    public function testRemember2FACookieTiedToCurrentSession()
+    {
+        config(['google2fa.remember_2fa' => true]);
+
+        // First login - creates session 1 and cookie with token 1
+        $request1 = $this->createEmptyRequest();
+        $session1 = $this->app['session.store'];
+        $request1->setLaravelSession($session1);
+
+        $authenticator1 = app(\PragmaRX\Google2FALaravel\Google2FA::class)->boot($request1);
+        $authenticator1->login();
+
+        $cookie1 = $request1->attributes->get('google2fa_cookie');
+        $this->assertNotNull($cookie1);
+
+        // Simulate new session (e.g., user's auth expired and they logged in again)
+        // This creates a new session with a different 2FA token
+        $request2 = $this->createEmptyRequest();
+        $request2->setLaravelSession($session1); // Same session but token will be regenerated
+
+        $authenticator2 = app(\PragmaRX\Google2FALaravel\Google2FA::class)->boot($request2);
+
+        // Old cookie should still be valid because it's the same session
+        $request2->cookies->set('google2fa_remember', $cookie1->getValue());
+        $this->assertNotNull($authenticator2->getValid2FACookie());
+
+        // Now simulate a new login which generates a new token
+        $authenticator2->login();
+
+        $cookie2 = $request2->attributes->get('google2fa_cookie');
+        $this->assertNotNull($cookie2);
+
+        // The new cookie should have a different value (different token)
+        $this->assertNotEquals($cookie1->getValue(), $cookie2->getValue());
     }
 }

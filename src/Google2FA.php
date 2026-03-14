@@ -10,6 +10,7 @@ use PragmaRX\Google2FALaravel\Exceptions\InvalidSecretKey;
 use PragmaRX\Google2FALaravel\Support\Auth;
 use PragmaRX\Google2FALaravel\Support\Config;
 use PragmaRX\Google2FALaravel\Support\Constants;
+use PragmaRX\Google2FALaravel\Support\Cookie;
 use PragmaRX\Google2FALaravel\Support\Request;
 use PragmaRX\Google2FALaravel\Support\Session;
 use PragmaRX\Google2FAQRCode\Google2FA as Google2FAService;
@@ -20,6 +21,7 @@ class Google2FA extends Google2FAService
     use Config;
     use Request;
     use Session;
+    use Cookie;
     protected $qrCodeBackend;
 
     /**
@@ -207,9 +209,26 @@ class Google2FA extends Google2FAService
      */
     protected function twoFactorAuthStillValid()
     {
-        return
-            (bool) $this->sessionGet(Constants::SESSION_AUTH_PASSED, false) &&
-            !$this->passwordExpired();
+        // Check session-based 2FA
+        $sessionValid = (bool) $this->sessionGet(Constants::SESSION_AUTH_PASSED, false) &&
+                        !$this->passwordExpired();
+
+        if ($sessionValid) {
+            return true;
+        }
+
+        // Check cookie-based 2FA
+        $cookiePayload = $this->getValid2FACookie();
+
+        if ($cookiePayload && $this->is2FACookieValid($cookiePayload)) {
+            // Update session to maintain consistency
+            $this->sessionPut(Constants::SESSION_AUTH_PASSED, true);
+            $this->updateCurrentAuthTime();
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -230,6 +249,9 @@ class Google2FA extends Google2FAService
         $this->sessionPut(Constants::SESSION_AUTH_PASSED, true);
 
         $this->updateCurrentAuthTime();
+
+        // Set 2FA remember cookie if enabled
+        $this->set2FARememberCookie(Carbon::now()->toIso8601String());
     }
 
     /**
@@ -240,6 +262,8 @@ class Google2FA extends Google2FAService
         $user = $this->getUser();
 
         $this->sessionForget();
+
+        $this->forget2FARememberCookie();
 
         event(new LoggedOut($user));
     }
