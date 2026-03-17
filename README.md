@@ -3,14 +3,11 @@
 <p align="center">
     <a href="https://packagist.org/packages/pragmarx/google2fa-laravel"><img alt="Latest Stable Version" src="https://img.shields.io/packagist/v/pragmarx/google2fa-laravel.svg?style=flat-square"></a>
     <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square"></a>
-    <a href="https://scrutinizer-ci.com/g/antonioribeiro/google2fa-laravel/?branch=master"><img alt="Code Quality" src="https://img.shields.io/scrutinizer/g/antonioribeiro/google2fa-laravel.svg?style=flat-square"></a>
-    <a href="https://travis-ci.org/antonioribeiro/google2fa-laravel"><img alt="Build" src="https://img.shields.io/travis/antonioribeiro/google2fa-laravel.svg?style=flat-square"></a>
+    <a href="https://github.com/antonioribeiro/google2fa-laravel/actions/workflows/run-tests.yml"><img alt="Tests" src="https://img.shields.io/github/actions/workflow/status/antonioribeiro/google2fa-laravel/run-tests.yml?branch=master&style=flat-square"></a>
 </p>
 <p align="center">
     <a href="https://packagist.org/packages/pragmarx/google2fa-laravel"><img alt="Downloads" src="https://img.shields.io/packagist/dt/pragmarx/google2fa-laravel.svg?style=flat-square"></a>
-    <a href="https://scrutinizer-ci.com/g/antonioribeiro/google2fa-laravel/?branch=master"><img alt="Coverage" src="https://img.shields.io/scrutinizer/coverage/g/antonioribeiro/google2fa-laravel.svg?style=flat-square"></a>
-    <a href="https://styleci.io/repos/94630851"><img alt="StyleCI" src="https://styleci.io/repos/94630851/shield"></a>
-    <a href="https://travis-ci.org/antonioribeiro/google2fa-laravel"><img alt="PHP" src="https://img.shields.io/badge/PHP-7.0%20--%208.0-brightgreen.svg?style=flat-square"></a>
+    <a href="https://php.net"><img alt="PHP" src="https://img.shields.io/badge/PHP-7.0%20--%208.5-brightgreen.svg?style=flat-square"></a>
 </p>
 
 ### Google Two-Factor Authentication Package for Laravel
@@ -37,6 +34,34 @@ You can scan the QR code on [this (old) demo page](https://antoniocarlosribeiro.
 
 ## Compatibility
 
+### Version 3.x
+
+| Laravel | PHP       |
+|---------|-----------|
+| 5.4.36+ | 7.0 - 7.3 |
+| 6.x     | 7.2 - 8.0 |
+| 7.x     | 7.3 - 8.1 |
+| 8.x     | 7.3 - 8.2 |
+| 9.x     | 8.0 - 8.2 |
+| 10.x    | 8.1 - 8.3 |
+| 11.x    | 8.2 - 8.3 |
+| 12.x    | 8.2 - 8.4 |
+| 13.x    | 8.3 - 8.5 |
+
+### Version 2.x (Legacy)
+
+If you need PHP 5 support, use version 2.x:
+
+| Laravel | PHP      |
+|---------|----------|
+| 5.2-5.8 | 5.6 - 7.3 |
+| 6.x     | 7.1 - 7.3 |
+| 7.x     | 7.2 - 7.4 |
+
+Install with: `composer require pragmarx/google2fa-laravel:^2.0`
+
+### Historical Compatibility
+
 | Laravel | [Google2FA](https://github.com/antonioribeiro/google2fa) | Google2FA-Laravel |
 |---------|-----------|-------------------|
 | 4.2     | <= 1.0.1  |                   |
@@ -55,7 +80,13 @@ Click [here](https://pragmarx.com/playground/google2fa/middleware) to see the mi
 
 Use Composer to install it:
 
+**Latest version (3.x - requires PHP 7.0+):**
+
     composer require pragmarx/google2fa-laravel
+
+**Legacy version (2.x - supports PHP 5):**
+
+    composer require pragmarx/google2fa-laravel:^2.0
 
 
 ## Installing on Laravel
