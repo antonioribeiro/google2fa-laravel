@@ -25,7 +25,9 @@ return [
     'auth' => 'auth',
 
     /*
-     * Guard.
+     * Guards to be checked for authentication.
+     * You can provide a string (e.g., 'web') or an array of guards (e.g., ['admin', 'agent']).
+     * The package will use the first authenticated guard it finds.
      */
     'guard' => '',
 

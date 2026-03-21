@@ -13,6 +13,7 @@ trait Auth
 
     /**
      * Get or make an auth instance.
+     * Supports single or multiple guards defined in 'google2fa.guard'.
      *
      * @return \Illuminate\Foundation\Application|mixed
      */
@@ -21,8 +22,19 @@ trait Auth
         if (is_null($this->auth)) {
             $this->auth = app($this->config('auth'));
 
-            if (!empty($this->config('guard'))) {
-                $this->auth = app($this->config('auth'))->guard($this->config('guard'));
+            $guards = $this->config('guard');
+
+            if (!empty($guards)) {
+                if (!is_array($guards)) {
+                    $guards = [$guards];
+                }
+
+                foreach ($guards as $guard) {
+                    if (auth()->guard($guard)->check()) {
+                        $this->auth = auth()->guard($guard);
+                        break;
+                    }
+                }
             }
         }
 
