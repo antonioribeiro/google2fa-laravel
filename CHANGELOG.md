@@ -1,5 +1,10 @@
 ## Change Log
 
+## [3.1.0] - 2026-07-18
+### Added
+- Google2FA v9 support (32 character secrets by default)
+- google2fa-qrcode v4 support (QR codes returned as base64 data URIs)
+
 ## [2.0.1] - 2021-08-15
 ### Added
 - Make image backend optional if bacon is not installed
